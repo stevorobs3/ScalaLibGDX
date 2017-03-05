@@ -1,20 +1,24 @@
-language: scala
+language: android
 scala:
    - 2.11.8
-android:
-  components:
-    - tools
-    - platform-tools
-    - tools
-    - build-tools-25.0.0
-    - android-25
-#install:
-#  - echo y | android update sdk -u -a -t tools
-#  - echo y | android update sdk -u -a -t platform-tools
-#  - echo y | android update sdk -u -a -t build-tools-25.0.2
-#  - echo y | android update sdk -u -a -t android-25
-#  - echo y | android update sdk -u -a -t extra-google-m2repository
-#  - echo y | android update sdk -u -a -t extra-android-m2repository
-script: sbt test
-script: sbt assembly
-script: sbt android/android:package-release
+sudo: required
+jdk:
+  - oraclejdk8
+before_install:
+install:
+    - sudo apt-get update
+    - echo y | android update sdk -u -a -t tools
+    - echo y | android update sdk -u -a -t platform-tools
+    - echo y | android update sdk -u -a -t build-tools-25.0.2
+    - echo y | android update sdk -u -a -t android-25
+    - echo y | android update sdk -u -a -t extra-google-m2repository
+    - echo y | android update sdk -u -a -t extra-android-m2repository
+    - sudo apt-get install scala
+    - echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+    - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
+    - sudo apt-get update
+    - sudo apt-get install sbt
+script:
+    - sbt test
+    - sbt assembly
+    - sbt android/android:package-release
