@@ -11,6 +11,6 @@ class Main extends AndroidApplication {
     config.useCompass = false
     config.useWakelock = true
     config.hideStatusBar = true
-    initialize(new Libgdxtest, config)
+    initialize(new ScalaLibGDX, config)
   }
 }
