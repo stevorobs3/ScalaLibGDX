@@ -1,4 +1,4 @@
-package com.onsightgames.libgdxscala
+package com.onsightgames.scalalibgdx
 
 import com.badlogic.gdx.backends.lwjgl.{LwjglApplication, LwjglApplicationConfiguration}
 

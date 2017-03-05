@@ -1,7 +1,7 @@
-package com.onsightgames.libgdxscala
+package com.onsightgames.scalalibgdx
 
-import android.os.Bundle
 import com.badlogic.gdx.backends.android._
+import android.os.Bundle
 
 class Main extends AndroidApplication {
   override def onCreate(savedInstanceState: Bundle) {

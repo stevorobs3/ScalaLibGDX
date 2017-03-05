@@ -10,6 +10,8 @@ import org.scalastyle.sbt.ScalastylePlugin.scalastyle
 val libgdxVersion    = "1.9.5"
 val scalaLangVersion = "2.11.8"
 val proguardVersion  = "5.1"
+val title = "ScalaLibGDX"
+val assetDir = "assets"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 lazy val testScalastyle = taskKey[Unit]("testScalastyle")
@@ -21,11 +23,11 @@ testScalastyle := org.scalastyle.sbt.ScalastylePlugin.scalastyle.in(Test).toTask
 (test in Test) <<= (test in Test) dependsOn testScalastyle
 
 lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
-  name := "libgdxtest",
+  name := title,
   version := "0.1",
   scalaVersion := scalaLangVersion,
   assetsDirectory := {
-    val r = file("assets")
+    val r = file(assetDir)
     IO.createDirectory(r)
     r
   },

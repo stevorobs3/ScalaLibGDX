@@ -1,4 +1,4 @@
-package com.onsightgames.libgdxscala
+package com.onsightgames.scalalibgdx
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.{GL20, Texture}
