@@ -3,19 +3,23 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.{GL20, Texture}
 import com.badlogic.gdx.{Game, Gdx}
+
 object ScalaLibGDX {
   val Width = 480
   val Height = 800
   val Title = "ScalaLibGDX"
 }
 
-class ScalaLibGDX extends Game {
+class ScalaLibGDX extends Game
+ with HasLogger {
+  val LogId = "ScalaLibGDX"
+
   lazy val sprite = new Texture("libgdxlogo.png")
   lazy val batch  = new SpriteBatch
 
   override def create(): Unit = {}
   override def render(): Unit = {
-    Gdx.gl.glClearColor(1,0,0,1)
+    Gdx.gl.glClearColor(1,1,1,1)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     batch.begin()
     val x = (Gdx.graphics.getWidth - sprite.getWidth) / 2f
