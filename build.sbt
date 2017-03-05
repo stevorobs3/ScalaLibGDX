@@ -5,10 +5,20 @@ import com.google.common.io.Files
 import org.apache.commons.io.FileUtils
 import scala.collection.convert.wrapAll._
 import sbtrobovm.RobovmPlugin.ManagedNatives
+import org.scalastyle.sbt.ScalastylePlugin.scalastyle
 
 val libgdxVersion    = "1.9.5"
 val scalaLangVersion = "2.11.8"
 val proguardVersion  = "5.1"
+
+lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
+lazy val testScalastyle = taskKey[Unit]("testScalastyle")
+
+compileScalastyle := scalastyle.in(Compile).toTask("").value
+testScalastyle := org.scalastyle.sbt.ScalastylePlugin.scalastyle.in(Test).toTask("").value
+
+(compile in Compile) <<= (compile in Compile) dependsOn compileScalastyle
+(test in Test) <<= (test in Test) dependsOn testScalastyle
 
 lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
   name := "libgdxtest",
@@ -30,6 +40,8 @@ lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
   ),
   scalacOptions ++= Seq(
     "-Xlint",
+    "-Xfuture",
+    "-Yno-adapted-args",
     "-Ywarn-dead-code",
     "-Ywarn-value-discard",
     "-Ywarn-numeric-widen",
