@@ -21,4 +21,4 @@ install:
 script:
     - sbt test
     - sbt assembly
-    - sbt android/android:package-release
+    - sbt android/android:package-debug
