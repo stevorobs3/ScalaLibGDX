@@ -1,13 +1,22 @@
 language: android
 scala:
    - 2.11.8
+sudo: required
+cache:
+  directories:
+  - $HOME/.sbt
+  - android/target
+  - core/target
+  - desktop/target
+  - target
+  - project/project
+  - project/target
+  - ios/target
 git:
   depth: 3
-sudo: required
 jdk:
   - oraclejdk8
 before_install:
-install:
     - sudo apt-get update
     - echo y | android update sdk -u -a -t tools
     - echo y | android update sdk -u -a -t platform-tools
