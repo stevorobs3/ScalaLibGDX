@@ -4,7 +4,7 @@ import com.badlogic.gdx.backends.android._
 import android.os.Bundle
 
 class Main extends AndroidApplication {
-  override def onCreate(savedInstanceState: Bundle) {
+  override def onCreate(savedInstanceState: Bundle) : Unit = {
     super.onCreate(savedInstanceState)
     val config = new AndroidApplicationConfiguration
     config.useAccelerometer = false

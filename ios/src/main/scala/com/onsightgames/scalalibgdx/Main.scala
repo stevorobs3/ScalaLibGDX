@@ -12,7 +12,7 @@ class Main extends IOSApplication.Delegate {
 }
 
 object Main {
-  def main(args: Array[String]) {
+  def main(args: Array[String]) : Unit = {
     val pool = new NSAutoreleasePool
     //scalastyle:off
     UIApplication.main(args, null, classOf[Main])
