@@ -1,6 +1,8 @@
 language: android
 scala:
    - 2.11.8
+git:
+  depth: 3
 sudo: required
 jdk:
   - oraclejdk8
