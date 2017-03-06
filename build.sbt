@@ -41,6 +41,7 @@ lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
     "-target", "1.7"
   ),
   scalacOptions ++= Seq(
+    "-Xfatal-warnings",
     "-Xlint",
     "-Xfuture",
     "-Yno-adapted-args",
