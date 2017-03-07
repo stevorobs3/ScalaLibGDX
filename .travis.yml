@@ -5,6 +5,7 @@ sudo: required
 cache:
   directories:
   - $HOME/.sbt
+  - $HOME/.ivy2/cache
   - android/target
   - core/target
   - desktop/target
