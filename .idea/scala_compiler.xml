@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <profile name="SBT 1" modules="all" />
+    <profile name="SBT 2" modules="android">
+      <option name="deprecationWarnings" value="true" />
+      <option name="uncheckedWarnings" value="true" />
+      <option name="featureWarnings" value="true" />
+      <parameters>
+        <parameter value="-Xfatal-warnings" />
+        <parameter value="-Xlint" />
+        <parameter value="-Xfuture" />
+        <parameter value="-Yno-adapted-args" />
+        <parameter value="-Ywarn-dead-code" />
+        <parameter value="-Ywarn-value-discard" />
+        <parameter value="-Ywarn-numeric-widen" />
+        <parameter value="-Ywarn-unused" />
+        <parameter value="-Ywarn-unused-import" />
+        <parameter value="-encoding" />
+        <parameter value="UTF-8" />
+        <parameter value="-target:jvm-1.7" />
+        <parameter value="-bootclasspath" />
+        <parameter value="C:\Users\steve\.android\sbt\sdk\platforms\android-25\android.jar" />
+        <parameter value="-javabootclasspath" />
+        <parameter value="C:\Users\steve\.android\sbt\sdk\platforms\android-25\android.jar" />
+      </parameters>
+    </profile>
+    <profile name="SBT 3" modules="core,desktop,ios">
+      <option name="deprecationWarnings" value="true" />
+      <option name="uncheckedWarnings" value="true" />
+      <option name="featureWarnings" value="true" />
+      <parameters>
+        <parameter value="-Xfatal-warnings" />
+        <parameter value="-Xlint" />
+        <parameter value="-Xfuture" />
+        <parameter value="-Yno-adapted-args" />
+        <parameter value="-Ywarn-dead-code" />
+        <parameter value="-Ywarn-value-discard" />
+        <parameter value="-Ywarn-numeric-widen" />
+        <parameter value="-Ywarn-unused" />
+        <parameter value="-Ywarn-unused-import" />
+        <parameter value="-encoding" />
+        <parameter value="UTF-8" />
+        <parameter value="-target:jvm-1.7" />
+      </parameters>
+    </profile>
+  </component>
+</project>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: com.mobidevelop.robovm:robovm-cocoatouch:2.3.0:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.mobidevelop.robovm/robovm-cocoatouch/jars/robovm-cocoatouch-2.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.mobidevelop.robovm/robovm-cocoatouch/docs/robovm-cocoatouch-2.3.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.mobidevelop.robovm/robovm-cocoatouch/srcs/robovm-cocoatouch-2.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

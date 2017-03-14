@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/all.iml" filepath="$PROJECT_DIR$/.idea/modules/all.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/all-build.iml" filepath="$PROJECT_DIR$/.idea/modules/all-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android-build.iml" filepath="$PROJECT_DIR$/.idea/modules/android-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core.iml" filepath="$PROJECT_DIR$/.idea/modules/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-build.iml" filepath="$PROJECT_DIR$/.idea/modules/core-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop-build.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ios.iml" filepath="$PROJECT_DIR$/.idea/modules/ios.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ios-build.iml" filepath="$PROJECT_DIR$/.idea/modules/ios-build.iml" />
+    </modules>
+  </component>
+</project>
