@@ -32,7 +32,8 @@ lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
     r
   },
   libraryDependencies ++= Seq(
-    "com.badlogicgames.gdx" % "gdx" % libgdxVersion
+    "com.badlogicgames.gdx" % "gdx" % libgdxVersion,
+    "com.typesafe.akka" %% "akka-actor" % "2.4.17"
   ),
   javacOptions ++= Seq(
     "-Xlint",
@@ -67,8 +68,7 @@ lazy val desktop = project in file("desktop") settings (sharedSettings: _*) depe
     libraryDependencies ++= Seq(
       "net.sf.proguard" % "proguard-base" % proguardVersion % "provided",
       "com.badlogicgames.gdx" % "gdx-backend-lwjgl" % libgdxVersion,
-      "com.badlogicgames.gdx" % "gdx-platform" % libgdxVersion classifier "natives-desktop",
-      "com.typesafe.akka" %% "akka-actor" % "2.4.17"
+      "com.badlogicgames.gdx" % "gdx-platform" % libgdxVersion classifier "natives-desktop"
     ),
     fork in Compile := true,
     baseDirectory in run := assetsDirectory.value,

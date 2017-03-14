@@ -3,6 +3,7 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.Screen
 
 import scala.collection.mutable
+import akka.actor.{FSM, Props}
 
 abstract class Event {
   def applyTo(entity : BaseEntity) : Seq[Event]
@@ -12,6 +13,8 @@ abstract class StateTransition[Entity <: BaseEntity] {
 }
 trait BaseRequest
 trait BaseEvent
+trait BaseData
+
 abstract class Living extends BaseEntity {
   var health    : Int
   var alive     : Boolean = true
@@ -78,7 +81,7 @@ class Example extends BaseEntity[Example.ExampleRequest, Example.ExampleEvent] {
   }
 }
 
-abstract class BaseEntity[Request <: BaseRequest, Event <: BaseEvent] {
+abstract class BaseEntity[Request <: BaseRequest, Event <: BaseEvent, Data <: BaseData] {
   protected def triggerEvent[E <: Event](event : E) : Unit = {
     registeredCallbacks.flatMap{
       case callback: (E => Unit) =>
@@ -87,6 +90,16 @@ abstract class BaseEntity[Request <: BaseRequest, Event <: BaseEvent] {
       case c : (Event => Unit) => Some(c)
     }
   }
+
+// TODO: wrap methods of FSM actor inside an Actor System, etc
+  val InitialState : _ <: States
+  val InitialData : _ <: Data
+
+  trait States
+  private lazy val FSMActor = Props(new FSM[States, Data]{
+    startWith(InitialState, InitialData)
+
+  })
 
   // TODO: Make this part of the Actor data?
   private val registeredCallbacks = mutable.MutableList.empty[Event => Unit]
