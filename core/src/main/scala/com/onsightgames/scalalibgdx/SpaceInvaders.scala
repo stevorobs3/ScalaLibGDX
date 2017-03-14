@@ -33,11 +33,12 @@ class SpaceInvaders extends Screen
 
   lazy val batch  = new SpriteBatch
   lazy val sprite = new Texture("libgdxlogo.png")
+  val alienFleet = new AlienFleet
 
   override val LogId: String = "SpaceInvaders"
 
   private def update(delta : Float) : Unit = {
-
+    alienFleet.update(delta)
   }
 
   private def render() : Unit = {
@@ -49,8 +50,6 @@ class SpaceInvaders extends Screen
   }
 
   private def renderEntities(batch : SpriteBatch) : Unit = {
-    val x = (Gdx.graphics.getWidth - sprite.getWidth) / 2f
-    val y = (Gdx.graphics.getHeight - sprite.getHeight) / 2f
-    batch.draw(sprite, x, y)
+    alienFleet.render(batch)
   }
 }

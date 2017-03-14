@@ -3,7 +3,7 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.Game
 
 object ScalaLibGDX {
-  val Width = 480
+  val Width = 600
   val Height = 800
   val Title = "ScalaLibGDX"
 }
