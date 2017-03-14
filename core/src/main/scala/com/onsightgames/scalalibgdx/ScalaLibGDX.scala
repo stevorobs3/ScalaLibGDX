@@ -8,6 +8,9 @@ object ScalaLibGDX {
   val Width = 480
   val Height = 800
   val Title = "ScalaLibGDX"
+
+  // pluck ^ from global configuration
+  lazy val Instance : ScalaLibGDX = new ScalaLibGDX
 }
 
 class ScalaLibGDX extends Game
@@ -16,6 +19,10 @@ class ScalaLibGDX extends Game
 
   lazy val sprite = new Texture("libgdxlogo.png")
   lazy val batch  = new SpriteBatch
+
+  def setScreen[W,E](newScreen : SinglePlayerScreen[W,E]) : Unit = {
+    setScreen(newScreen.screen)
+  }
 
   override def create(): Unit = {}
   override def render(): Unit = {

@@ -67,7 +67,8 @@ lazy val desktop = project in file("desktop") settings (sharedSettings: _*) depe
     libraryDependencies ++= Seq(
       "net.sf.proguard" % "proguard-base" % proguardVersion % "provided",
       "com.badlogicgames.gdx" % "gdx-backend-lwjgl" % libgdxVersion,
-      "com.badlogicgames.gdx" % "gdx-platform" % libgdxVersion classifier "natives-desktop"
+      "com.badlogicgames.gdx" % "gdx-platform" % libgdxVersion classifier "natives-desktop",
+      "com.typesafe.akka" %% "akka-actor" % "2.4.17"
     ),
     fork in Compile := true,
     baseDirectory in run := assetsDirectory.value,
