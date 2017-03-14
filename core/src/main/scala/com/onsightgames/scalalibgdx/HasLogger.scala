@@ -14,6 +14,6 @@ trait HasLogger {
   }
 
   def error(message : String) : Unit = {
-    Gdx.app.debug(LogId, message)
+    Gdx.app.error(LogId, message)
   }
 }
