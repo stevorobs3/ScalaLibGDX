@@ -30,7 +30,6 @@ class SpaceInvaders extends Screen
     render()
   }
 
-
   lazy val batch  = new SpriteBatch
   lazy val sprite = new Texture("libgdxlogo.png")
   val alienFleet = new AlienFleet
@@ -42,7 +41,7 @@ class SpaceInvaders extends Screen
   }
 
   private def render() : Unit = {
-    Gdx.gl.glClearColor(1,1,1,1)
+    Gdx.gl.glClearColor(0,0,0,1)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     batch.begin()
     renderEntities(batch)
