@@ -1,8 +1,8 @@
 package com.onsightgames.scalalibgdx
 
-import com.badlogic.gdx.graphics.{GL20, Texture}
-import com.badlogic.gdx.{Gdx, Screen}
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.{Gdx, Screen}
 
 class SpaceInvaders extends Screen
   with HasLogger {
@@ -31,13 +31,13 @@ class SpaceInvaders extends Screen
   }
 
   lazy val batch  = new SpriteBatch
-  lazy val sprite = new Texture("libgdxlogo.png")
-  val alienFleet = new AlienFleet
+
+  var alienFleet = new AlienFleet(Level.One.alienFleet)
 
   override val LogId: String = "SpaceInvaders"
 
   private def update(delta : Float) : Unit = {
-    alienFleet.update(delta)
+     alienFleet.update(delta)
   }
 
   private def render() : Unit = {

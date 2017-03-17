@@ -1,8 +1,8 @@
 package com.onsightgames.scalalibgdx
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.onsightgames.scalalibgdx.Math.Matrix
 
 object AlienFleet {
   val SideGap = 20
@@ -10,17 +10,20 @@ object AlienFleet {
   val TopGap = 100
 }
 
-class AlienFleet extends HasLogger {
+class AlienFleet(
+  alienFleetData : AlienFleetData
+) extends HasLogger {
   import AlienFleet._
-  override val LogId: String = "AlienFormation"
+  override val LogId: String = "AlienFleet"
 
-  private val alienTexture = new Texture("alien.png")
-  private val FleetHeight = 5
-  private val FleetWidth = 10
-  private val aliens = List.fill(FleetHeight)(List.fill(FleetWidth)(new Alien(alienTexture)))
+  private val aliens   = {
+    def alienRow = List.fill(alienFleetData.width)(alienFleetData.alien.copy())
+    List.fill(alienFleetData.height)(alienRow)
+  }
+  private val width = alienFleetData.width
+  private val height = alienFleetData.height
+
   setupFormation(aliens)
-
-
 
   def update(delta : Float) : Unit = {
 
@@ -30,7 +33,7 @@ class AlienFleet extends HasLogger {
     aliens.foreach(row => row.foreach(alien => alien.render(batch)))
   }
 
-  private def setupFormation(aliens: List[List[Alien]]) = {
+  private def setupFormation(aliens: Matrix[Alien]) = {
     aliens.zipWithIndex.foreach{
       case (alienRow, rowNum) =>
         alienRow.zipWithIndex.foreach{
@@ -53,10 +56,11 @@ class AlienFleet extends HasLogger {
     alienWidth  : Int,
     alienHeight : Int
   ) : (Int, Int)= {
-    val xSpacing = (formationWidth - FleetWidth * alienWidth.toFloat) / FleetWidth
-    val ySpacing = (formationHeight - FleetHeight * alienHeight) / FleetHeight
+    val xSpacing = (formationWidth - width * alienWidth.toFloat) / width
+    val ySpacing = (formationHeight - height * alienHeight) / height
     val x = SideGap + (colNum + 0.5f) * xSpacing + colNum * alienWidth
     val y = BottomGap + (rowNum + 0.5f) * ySpacing + rowNum * alienHeight
+    info(s"Alien($x,$y)")
     (x.toInt, y.toInt)
   }
 
