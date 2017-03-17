@@ -16,17 +16,19 @@ class AlienFleet(
   import AlienFleet._
   override val LogId: String = "AlienFleet"
 
-  private val aliens   = {
-    def alienRow = List.fill(alienFleetData.width)(alienFleetData.alien.copy())
+  private var aliens = {
+    val alienRow = List.fill(alienFleetData.width)(alienFleetData.alien)
     List.fill(alienFleetData.height)(alienRow)
   }
   private val width = alienFleetData.width
   private val height = alienFleetData.height
 
-  setupFormation(aliens)
+  aliens = setupFormation(aliens)
 
   def update(delta : Float) : Unit = {
-
+    aliens = aliens.map{alienRow =>
+      alienRow.map(alien => transformAlien(alien, delta))
+    }
   }
 
   def render(batch : SpriteBatch) : Unit = {
@@ -34,9 +36,9 @@ class AlienFleet(
   }
 
   private def setupFormation(aliens: Matrix[Alien]) = {
-    aliens.zipWithIndex.foreach{
+    aliens.zipWithIndex.map{
       case (alienRow, rowNum) =>
-        alienRow.zipWithIndex.foreach{
+        alienRow.zipWithIndex.map{
           case (alien, colNum) =>
             val (x, y) = calculateAlienPosition(
               rowNum,
@@ -44,10 +46,13 @@ class AlienFleet(
               alien.width.toInt,
               alien.height.toInt
             )
-            alien.x = x
-            alien.y = y
+            alien.copy(x = x, y = y)
         }
     }
+  }
+
+  private def transformAlien(alien : Alien, delta : Float) : Alien = {
+    alien.copy(currentTime =  alien.currentTime + delta)
   }
 
   private def calculateAlienPosition(
@@ -55,13 +60,12 @@ class AlienFleet(
     colNum      : Int,
     alienWidth  : Int,
     alienHeight : Int
-  ) : (Int, Int)= {
+  ) : (Float, Float)= {
     val xSpacing = (formationWidth - width * alienWidth.toFloat) / width
     val ySpacing = (formationHeight - height * alienHeight) / height
     val x = SideGap + (colNum + 0.5f) * xSpacing + colNum * alienWidth
     val y = BottomGap + (rowNum + 0.5f) * ySpacing + rowNum * alienHeight
-    info(s"Alien($x,$y)")
-    (x.toInt, y.toInt)
+    (x, y)
   }
 
   private def formationWidth = Gdx.graphics.getWidth - 2 * SideGap

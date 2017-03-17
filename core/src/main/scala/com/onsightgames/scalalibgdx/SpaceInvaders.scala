@@ -32,7 +32,7 @@ class SpaceInvaders extends Screen
 
   lazy val batch  = new SpriteBatch
 
-  var alienFleet = new AlienFleet(Level.One.alienFleet)
+  val alienFleet = new AlienFleet(Level.One.alienFleet)
 
   override val LogId: String = "SpaceInvaders"
 
