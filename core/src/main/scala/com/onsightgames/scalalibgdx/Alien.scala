@@ -6,9 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.onsightgames.scalalibgdx.libgdx.Animation
 
 object Alien {
+
+  val SimpleAlienScale = 3f
+
   def simple : Alien = {
     //scalastyle:off
-    new Alien(0f, 0f, 3f, simpleAlienTextures, 2f, 0f)
+    new Alien(0f, 0f, SimpleAlienScale, simpleAlienTextures, 2f, 0f)
     //scalastyle:on
   }
   private lazy val simpleAlienTextures = List(

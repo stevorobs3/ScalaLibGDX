@@ -33,6 +33,7 @@ class SpaceInvaders extends Screen
   lazy val batch  = new SpriteBatch
 
   val alienFleet = new AlienFleet(Level.One.alienFleet)
+  val ship       = Ship.atStartingPosition
 
   override val LogId: String = "SpaceInvaders"
 
@@ -50,5 +51,6 @@ class SpaceInvaders extends Screen
 
   private def renderEntities(batch : SpriteBatch) : Unit = {
     alienFleet.render(batch)
+    ship.render(batch)
   }
 }
