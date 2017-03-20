@@ -37,8 +37,11 @@ class SpaceInvaders extends Screen
 
   override val LogId: String = "SpaceInvaders"
 
+  Gdx.input.setInputProcessor(new KeyboardAdapter(ship))
+
   private def update(delta : Float) : Unit = {
-     alienFleet.update(delta)
+    alienFleet.update(delta)
+    ship.update()
   }
 
   private def render() : Unit = {
