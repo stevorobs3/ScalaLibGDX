@@ -24,17 +24,44 @@ class AlienFleet(
   private val width = alienFleetData.width
   private val height = alienFleetData.height
 
+  private var movingRight = true
+
   aliens = setupFormation(aliens)
 
-  def update(delta : Float) : Unit = {
+ def update(delta : Float) : Unit = {
+    lazy val allAliens      = aliens.flatten
+    lazy val rightMostAlien = rightMost(allAliens)
+    lazy val leftMostAlien  = leftMost(allAliens)
+    lazy val tooFarLeft     = leftMostAlien.leftEdge - SideGap <= 0
+    lazy val tooFarRight    = rightMostAlien.rightEdge + SideGap >= screenWidth
+    movingRight = (movingRight && !tooFarRight) || tooFarLeft
+
     aliens = aliens.map{alienRow =>
-      alienRow.map(alien => transformAlien(alien, delta))
+      alienRow.map(alien => transformAlien(alien, delta, movingRight))
     }
   }
 
   def render(batch : SpriteBatch) : Unit = {
     aliens.foreach(row => row.foreach(alien => alien.render(batch)))
   }
+
+  private def rightMost(aliens: List[Alien]) = {
+    find(aliens)((alien1, alien2) => alien1.position.x > alien2.position.x)
+  }
+
+  private def leftMost(aliens: List[Alien]) = {
+    find(aliens)((alien1, alien2) => alien1.position.x < alien2.position.x)
+  }
+
+  private def find(aliens: List[Alien])(f : (Alien, Alien) => Boolean) = {
+    aliens.tail.foldLeft(aliens.head){
+      case (result, alien) =>
+        if (f(alien, result)) alien
+        else                  result
+    }
+  }
+
+
 
   private def setupFormation(aliens: Matrix[Alien]) = {
     aliens.zipWithIndex.map{
@@ -52,8 +79,18 @@ class AlienFleet(
     }
   }
 
-  private def transformAlien(alien : Alien, delta : Float) : Alien = {
-    alien.copy(currentTime =  alien.currentTime + delta)
+  private def transformAlien(
+    alien     : Alien,
+    delta     : Float,
+    moveRight : Boolean
+  ) : Alien = {
+    val downDelta = Vector2.Down * alienFleetData.descentAcceleration * delta
+    val direction = if (moveRight) Vector2.Right else Vector2.Left
+    val acrossDelta = direction * alienFleetData.horizontalAcceleration * delta
+    alien.copy(
+      currentTime =  alien.currentTime + delta,
+      position = alien.position + downDelta + acrossDelta
+    )
   }
 
   private def calculateAlienPosition(
@@ -69,6 +106,8 @@ class AlienFleet(
     Vector2(x, y)
   }
 
-  private def formationWidth = Gdx.graphics.getWidth - 2 * SideGap
-  private def formationHeight = Gdx.graphics.getHeight - TopGap - BottomGap
+  private def screenWidth = Gdx.graphics.getWidth
+  private def screenHeight = Gdx.graphics.getHeight
+  private def formationWidth = screenWidth - 2 * SideGap
+  private def formationHeight = screenHeight - TopGap - BottomGap
 }

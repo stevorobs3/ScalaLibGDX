@@ -29,10 +29,12 @@ case class Alien private (
 ) {
   private val animation = Animation(framesPerSecond, textures, PlayMode.LOOP)
 
-  def width  : Float = animation.width
-  def height : Float = animation.height
+  def width     : Float = animation.width
+  def height    : Float = animation.height
+  def rightEdge : Float = position.x + width
+  def leftEdge  : Float = position.x
 
   def render(batch : SpriteBatch) : Unit = {
-    animation.render(position.x, position.y, scale, currentTime)(batch)
+    animation.render(position, scale, currentTime)(batch)
   }
 }

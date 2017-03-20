@@ -30,10 +30,10 @@ class SpaceInvaders extends Screen
     render()
   }
 
-  lazy val batch  = new SpriteBatch
+  private lazy val batch  = new SpriteBatch
 
-  val alienFleet = new AlienFleet(Level.One.alienFleet)
-  val ship       = Ship.atStartingPosition
+  private val alienFleet = new AlienFleet(Level.One.alienFleet)
+  private val ship       = Ship.atStartingPosition
 
   override val LogId: String = "SpaceInvaders"
 

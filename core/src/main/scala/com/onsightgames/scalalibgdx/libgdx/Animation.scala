@@ -2,7 +2,7 @@ package com.onsightgames.scalalibgdx.libgdx
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
-import com.badlogic.gdx.graphics.g2d.{SpriteBatch, Animation => LAnimation}
+import com.badlogic.gdx.graphics.g2d.{Sprite, SpriteBatch, Animation => LAnimation}
 import com.onsightgames.scalalibgdx.LArrayUtil._
 
 case class Animation (
@@ -18,26 +18,23 @@ case class Animation (
       texture
   }
 
-  private lazy val lAnimation = new LAnimation[Texture](
+  private lazy val lAnimation = new LAnimation[Sprite](
     1f / framesPerSecond,
-    textures.toLArray,
+    textures.map(texture => new Sprite(texture)).toLArray,
     playMode
   )
 
-  def width  : Float = textures.head.getWidth.toFloat
-  def height : Float = textures.head.getHeight.toFloat
+  def width  : Float = lAnimation.getKeyFrames.head.getWidth
+  def height : Float = lAnimation.getKeyFrames.head.getHeight
 
   def render(
-    x           : Float,
-    y           : Float,
+    position    : Vector2,
     scale       : Float,
     currentTime : Float
   )(batch : SpriteBatch) : Unit = {
-    val texture     = lAnimation.getKeyFrame(currentTime)
-    val width       = texture.getWidth * scale
-    val height      = texture.getHeight * scale
-    val extraWidth  = (width - texture.getWidth) / 2
-    val extraHeight = (width - texture.getHeight) / 2
-    batch.draw(texture, x - extraWidth, y - extraHeight, width, height)
+    val sprite = lAnimation.getKeyFrame(currentTime)
+    sprite.setPosition(position.x, position.y)
+    sprite.setScale(scale)
+    sprite.draw(batch)
   }
 }
