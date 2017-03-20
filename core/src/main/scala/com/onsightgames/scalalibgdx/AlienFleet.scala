@@ -3,6 +3,7 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.onsightgames.scalalibgdx.Math.Matrix
+import com.onsightgames.scalalibgdx.libgdx.Vector2
 
 object AlienFleet {
   val SideGap = 20
@@ -40,13 +41,13 @@ class AlienFleet(
       case (alienRow, rowNum) =>
         alienRow.zipWithIndex.map{
           case (alien, colNum) =>
-            val (x, y) = calculateAlienPosition(
+            val position = calculateAlienPosition(
               rowNum,
               colNum,
               alien.width.toInt,
               alien.height.toInt
             )
-            alien.copy(x = x, y = y)
+            alien.copy(position = position)
         }
     }
   }
@@ -60,12 +61,12 @@ class AlienFleet(
     colNum      : Int,
     alienWidth  : Int,
     alienHeight : Int
-  ) : (Float, Float)= {
+  ) : Vector2 = {
     val xSpacing = (formationWidth - width * alienWidth.toFloat) / width
     val ySpacing = (formationHeight - height * alienHeight) / height
     val x = SideGap + (colNum + 0.5f) * xSpacing + colNum * alienWidth
     val y = BottomGap + (rowNum + 0.5f) * ySpacing + rowNum * alienHeight
-    (x, y)
+    Vector2(x, y)
   }
 
   private def formationWidth = Gdx.graphics.getWidth - 2 * SideGap

@@ -3,7 +3,7 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.onsightgames.scalalibgdx.libgdx.Animation
+import com.onsightgames.scalalibgdx.libgdx.{Animation, Vector2}
 
 object Alien {
 
@@ -11,7 +11,7 @@ object Alien {
 
   def simple : Alien = {
     //scalastyle:off
-    new Alien(0f, 0f, SimpleAlienScale, simpleAlienTextures, 2f, 0f)
+    new Alien(Vector2.Zero, SimpleAlienScale, simpleAlienTextures, 2f, 0f)
     //scalastyle:on
   }
   private lazy val simpleAlienTextures = List(
@@ -21,20 +21,18 @@ object Alien {
 }
 
 case class Alien private (
-  x               : Float,
-  y               : Float,
+  position        : Vector2,
   scale           : Float,
   textures        : List[Texture],
   framesPerSecond : Float,
   currentTime     : Float
 ) {
-  // TODO: wrap in a scala Animation class
   private val animation = Animation(framesPerSecond, textures, PlayMode.LOOP)
 
   def width  : Float = animation.width
   def height : Float = animation.height
 
   def render(batch : SpriteBatch) : Unit = {
-    animation.render(x, y, scale, currentTime)(batch)
+    animation.render(position.x, position.y, scale, currentTime)(batch)
   }
 }
