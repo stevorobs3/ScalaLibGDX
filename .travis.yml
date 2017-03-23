@@ -31,6 +31,6 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install sbt
 script:
-    - sbt test
+    - sbt scalastyle scalastyle:test test
     - sbt assembly
     - sbt android/android:package-debug

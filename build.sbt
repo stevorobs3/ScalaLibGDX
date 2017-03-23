@@ -13,15 +13,6 @@ val proguardVersion  = "5.1"
 val title = "ScalaLibGDX"
 val assetDir = "assets"
 
-lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
-lazy val testScalastyle = taskKey[Unit]("testScalastyle")
-
-compileScalastyle := scalastyle.in(Compile).toTask("").value
-testScalastyle := org.scalastyle.sbt.ScalastylePlugin.scalastyle.in(Test).toTask("").value
-
-(compile in Compile) <<= (compile in Compile) dependsOn compileScalastyle
-(test in Test) <<= (test in Test) dependsOn testScalastyle
-
 lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
   name := title,
   version := "0.1",
