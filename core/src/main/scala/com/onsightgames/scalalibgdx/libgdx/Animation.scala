@@ -24,17 +24,13 @@ case class Animation (
     playMode
   )
 
-  def width  : Float = lAnimation.getKeyFrames.head.getWidth
-  def height : Float = lAnimation.getKeyFrames.head.getHeight
-
   def render(
     position    : Vector2,
-    scale       : Float,
+    dimensions  : Vector2,
     currentTime : Float
   )(batch : SpriteBatch) : Unit = {
     val sprite = lAnimation.getKeyFrame(currentTime)
-    sprite.setPosition(position.x, position.y)
-    sprite.setScale(scale)
+    sprite.setBounds(position.x, position.y, dimensions.x, dimensions.y)
     sprite.draw(batch)
   }
 }

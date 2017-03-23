@@ -1,40 +1,23 @@
 package com.onsightgames.scalalibgdx.aliens
 
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.onsightgames.scalalibgdx.libgdx.{Animation, Vector2}
+import com.onsightgames.scalalibgdx.Entity
+import com.onsightgames.scalalibgdx.libgdx.Vector2
 
 object Alien {
 
   val SimpleAlienScale = 3f
 
-  def simple : Alien = {
-    //scalastyle:off
-    new Alien(Vector2.Zero, SimpleAlienScale, simpleAlienTextures, 2f, 0f)
-    //scalastyle:on
-  }
-  private lazy val simpleAlienTextures = List(
-    new Texture("alienUp.png"),
-    new Texture("alienDown.png")
-  )
+  def simple : Alien = Alien(Vector2.Zero, Vector2(40f, 40f), 0f)
 }
 
-case class Alien private (
+case class Alien(
   position        : Vector2,
-  scale           : Float,
-  textures        : List[Texture],
-  framesPerSecond : Float,
+  dimensions      : Vector2,
   currentTime     : Float
-) {
-  private val animation = Animation(framesPerSecond, textures, PlayMode.LOOP)
+) extends Entity {
 
-  def width     : Float = animation.width
-  def height    : Float = animation.height
+  def width     : Float = dimensions.x
+  def height    : Float = dimensions.y
   def rightEdge : Float = position.x + width
   def leftEdge  : Float = position.x
-
-  def render(batch : SpriteBatch) : Unit = {
-    animation.render(position, scale, currentTime)(batch)
-  }
 }
