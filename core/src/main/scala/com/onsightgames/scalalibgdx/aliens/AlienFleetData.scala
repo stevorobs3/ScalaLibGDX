@@ -1,4 +1,4 @@
-package com.onsightgames.scalalibgdx
+package com.onsightgames.scalalibgdx.aliens
 
 case class AlienFleetData(
   height                 : Int,  // number of aliens across

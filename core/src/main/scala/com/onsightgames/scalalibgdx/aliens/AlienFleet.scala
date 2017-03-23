@@ -1,7 +1,8 @@
-package com.onsightgames.scalalibgdx
+package com.onsightgames.scalalibgdx.aliens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.onsightgames.scalalibgdx.HasLogger
 import com.onsightgames.scalalibgdx.Math.Matrix
 import com.onsightgames.scalalibgdx.libgdx.Vector2
 

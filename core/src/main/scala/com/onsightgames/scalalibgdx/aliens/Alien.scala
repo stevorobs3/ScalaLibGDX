@@ -1,4 +1,4 @@
-package com.onsightgames.scalalibgdx
+package com.onsightgames.scalalibgdx.aliens
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode

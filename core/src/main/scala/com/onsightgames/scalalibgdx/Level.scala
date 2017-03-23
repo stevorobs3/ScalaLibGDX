@@ -1,5 +1,7 @@
 package com.onsightgames.scalalibgdx
 
+import com.onsightgames.scalalibgdx.aliens.{Alien, AlienFleetData}
+
 object Level {
   //scalastyle:off
   lazy val One : Level = Level(

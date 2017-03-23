@@ -3,6 +3,7 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.{Gdx, Screen}
+import com.onsightgames.scalalibgdx.aliens.AlienFleet
 
 class SpaceInvaders extends Screen
   with HasLogger {
@@ -33,15 +34,11 @@ class SpaceInvaders extends Screen
   private lazy val batch  = new SpriteBatch
 
   private val alienFleet = new AlienFleet(Level.One.alienFleet)
-  private val ship       = Ship.atStartingPosition
 
   override val LogId: String = "SpaceInvaders"
 
-  Gdx.input.setInputProcessor(new KeyboardAdapter(ship))
-
   private def update(delta : Float) : Unit = {
     alienFleet.update(delta)
-    ship.update()
   }
 
   private def render() : Unit = {
@@ -54,6 +51,5 @@ class SpaceInvaders extends Screen
 
   private def renderEntities(batch : SpriteBatch) : Unit = {
     alienFleet.render(batch)
-    ship.render(batch)
   }
 }

@@ -13,6 +13,6 @@ class ScalaLibGDX extends Game
   val LogId = "ScalaLibGDX"
 
   override def create(): Unit = {
-    setScreen(new SpaceInvaders)
+    setScreen(ExampleGame.asScreen)
   }
 }
