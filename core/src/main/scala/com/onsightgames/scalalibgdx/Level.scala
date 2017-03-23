@@ -10,7 +10,7 @@ object Level {
       state = Ship(
         boundingBox = Rectangle(
           dimensions = Vector2(40f, 40f),
-          position   = Vector2(screen.width / 2f, screen.height / 10f)
+          bottomLeft   = Vector2(screen.width / 2f, screen.height / 10f)
         ),
         velocity     = Vector2.Zero,
         acceleration = Vector2.Zero

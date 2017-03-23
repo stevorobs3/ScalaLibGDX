@@ -7,7 +7,7 @@ object LifecycleEventEmitter {
   case class Update(timeElapsed : Float) extends Event
 }
 
-class LifecycleEventEmitter(emit : Event => Unit, draw : () => Unit)
+class LifecycleEventEmitter(update : LifecycleEventEmitter.Update => Unit, draw : () => Unit)
   extends Screen
   with HasLogger {
 
@@ -40,7 +40,7 @@ class LifecycleEventEmitter(emit : Event => Unit, draw : () => Unit)
   }
 
   override def render(delta: Float): Unit = {
-    emit(Update(delta))
+    update(Update(delta))
     draw()
   }
 }

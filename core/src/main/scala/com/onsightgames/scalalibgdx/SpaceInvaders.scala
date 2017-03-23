@@ -3,13 +3,14 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.{Gdx, Screen}
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.onsightgames.scalalibgdx.events.{KeyboardEventEmitter, LifecycleEventEmitter}
+import com.onsightgames.scalalibgdx.events.LifecycleEventEmitter.Update
+import com.onsightgames.scalalibgdx.events.{BoundaryCollisionDetector, KeyboardEventEmitter, LifecycleEventEmitter}
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 
 object SpaceInvaders {
 
   private val screen = Rectangle(
-    position   = Vector2.Zero,
+    bottomLeft   = Vector2.Zero,
     dimensions = Vector2(
       x = Gdx.graphics.getWidth.toFloat,
       y = Gdx.graphics.getHeight.toFloat
@@ -20,8 +21,9 @@ object SpaceInvaders {
 
   private val store = new Store(components)
 
-  private val lifecycleEventEmitter = new LifecycleEventEmitter(store.dispatch, render)
-  private val keyboardEventEmitter  = new KeyboardEventEmitter(store.dispatch)
+  private val lifecycleEventEmitter     = new LifecycleEventEmitter(update, render)
+  private val keyboardEventEmitter      = new KeyboardEventEmitter(store.dispatch)
+  private val boundaryCollisionDetector = new BoundaryCollisionDetector
 
   private lazy val batch  = new SpriteBatch
 
@@ -31,6 +33,13 @@ object SpaceInvaders {
     batch.begin()
     store.components.foreach(_ render batch)
     batch.end()
+  }
+
+  def update(updateEvent : Update) : Unit = {
+    store.dispatch(updateEvent)
+    boundaryCollisionDetector
+      .run(screen, store.getState)
+      .foreach(store.dispatch)
   }
 
   def start : Screen = {

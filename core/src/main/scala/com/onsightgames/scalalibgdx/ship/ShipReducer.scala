@@ -1,6 +1,7 @@
 package com.onsightgames.scalalibgdx.ship
 
 import com.onsightgames.scalalibgdx.Reducer
+import com.onsightgames.scalalibgdx.events.BoundaryCollisionDetector.{Boundary, BoundaryCrossed}
 import com.onsightgames.scalalibgdx.events.Event
 import com.onsightgames.scalalibgdx.events.KeyboardEventEmitter.{Key, KeyDownEvent, KeyUpEvent}
 import com.onsightgames.scalalibgdx.events.LifecycleEventEmitter.Update
@@ -20,5 +21,21 @@ object ShipReducer extends Reducer[Ship] {
     case (ship, KeyUpEvent(Key.Right))   => ship.accelerate(Vector2(-1f, 0))
     case (ship, KeyUpEvent(Key.Down))    => ship.accelerate(Vector2(0, +1f))
     case (ship, KeyUpEvent(Key.Up))      => ship.accelerate(Vector2(0, -1f))
+
+    case (ship, boundaryCrossed : BoundaryCrossed) if boundaryCrossed.isTarget(ship) =>
+      wrapScreen(ship, boundaryCrossed)
+  }
+
+  private def wrapScreen(ship: Ship, boundaryCrossed: BoundaryCrossed) = {
+    val position = ship.boundingBox.bottomLeft
+    val screen   = boundaryCrossed.screen
+
+    val newPosition = boundaryCrossed.boundary match {
+      case Boundary.Left   => position.copy(x = position.x + screen.width)
+      case Boundary.Right  => position.copy(x = position.x - screen.width)
+      case Boundary.Bottom => position.copy(y = position.y + screen.height)
+      case Boundary.Top    => position.copy(y = position.y - screen.height)
+    }
+    ship.copy(boundingBox = ship.boundingBox.copy(bottomLeft = newPosition))
   }
 }

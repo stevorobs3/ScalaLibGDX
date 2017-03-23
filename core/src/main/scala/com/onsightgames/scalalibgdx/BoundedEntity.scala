@@ -2,15 +2,15 @@ package com.onsightgames.scalalibgdx
 
 import com.onsightgames.scalalibgdx.libgdx.Rectangle
 
-trait HasBoundingBox {
+trait BoundedEntity extends Entity {
 
   val boundingBox : Rectangle
 
-  def isLeftOf(hasBoundingBox : HasBoundingBox) : Boolean = {
+  def isLeftOf(hasBoundingBox : BoundedEntity) : Boolean = {
     boundingBox.x < hasBoundingBox.boundingBox.x
   }
 
-  def isRightOf(hasBoundingBox : HasBoundingBox) : Boolean = {
+  def isRightOf(hasBoundingBox : BoundedEntity) : Boolean = {
     boundingBox.x > hasBoundingBox.boundingBox.x
   }
 }

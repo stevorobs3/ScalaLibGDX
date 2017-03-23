@@ -7,17 +7,22 @@ object Rectangle {
 
   implicit def RectangleToRectangle(rectangle : Rectangle) : LRectangle = {
     new LRectangle(
-      rectangle.position.x,
-      rectangle.position.y,
+      rectangle.bottomLeft.x,
+      rectangle.bottomLeft.y,
       rectangle.dimensions.x,
       rectangle.dimensions.y
     )
   }
 }
 
-case class Rectangle(position : Vector2, dimensions : Vector2) {
+case class Rectangle(bottomLeft : Vector2, dimensions : Vector2) {
 
   def translate(vector : Vector2) : Rectangle = {
-    copy(position = position + vector)
+    copy(bottomLeft = bottomLeft + vector)
   }
+
+  def leftEdge   : Float = bottomLeft.x
+  def rightEdge  : Float = bottomLeft.x + dimensions.x
+  def bottomEdge : Float = bottomLeft.y
+  def topEdge    : Float = bottomLeft.y + dimensions.y
 }

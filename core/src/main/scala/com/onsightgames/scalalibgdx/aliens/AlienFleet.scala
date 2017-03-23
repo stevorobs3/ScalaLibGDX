@@ -17,8 +17,8 @@ case class AlienFleet(aliens : Matrix[Alien], movingRight : Boolean, velocity : 
     lazy val allAliens      = aliens.flatten
     lazy val rightMostAlien = rightMost(allAliens)
     lazy val leftMostAlien  = leftMost(allAliens)
-    lazy val tooFarLeft     = leftMostAlien.leftEdge - SideGap <= 0
-    lazy val tooFarRight    = rightMostAlien.rightEdge + SideGap >= Gdx.graphics.getWidth
+    lazy val tooFarLeft     = leftMostAlien.boundingBox.leftEdge - SideGap <= 0
+    lazy val tooFarRight    = rightMostAlien.boundingBox.rightEdge + SideGap >= Gdx.graphics.getWidth
     val newMovingRight = (movingRight && !tooFarRight) || tooFarLeft
 
     val newAliens = aliens.map { alienRow =>

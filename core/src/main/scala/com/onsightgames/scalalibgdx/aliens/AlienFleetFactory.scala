@@ -45,12 +45,12 @@ object AlienFleetFactory {
             val position = calculateAlienPosition(
               rowNum,
               colNum,
-              alien.width.toInt,
-              alien.height.toInt,
+              alien.boundingBox.width.toInt,
+              alien.boundingBox.height.toInt,
               alienFleetData,
               screen
             )
-            alien.copy(boundingBox = alien.boundingBox.copy(position = position))
+            alien.copy(boundingBox = alien.boundingBox.copy(bottomLeft = position))
         }
     }
   }

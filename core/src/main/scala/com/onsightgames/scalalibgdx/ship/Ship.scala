@@ -1,7 +1,7 @@
 package com.onsightgames.scalalibgdx.ship
 
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
-import com.onsightgames.scalalibgdx.{Entity, HasBoundingBox}
+import com.onsightgames.scalalibgdx.BoundedEntity
 
 object Ship {
 
@@ -14,8 +14,7 @@ case class Ship(
   velocity     : Vector2,
   acceleration : Vector2
 )
-  extends Entity
-  with HasBoundingBox {
+  extends BoundedEntity {
 
   import Ship._
 

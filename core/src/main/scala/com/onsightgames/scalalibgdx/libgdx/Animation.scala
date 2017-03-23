@@ -27,8 +27,8 @@ case class Animation (
   def render(rectangle: Rectangle, currentTime : Float)(batch : SpriteBatch) : Unit = {
     val sprite = lAnimation.getKeyFrame(currentTime)
     sprite.setBounds(
-      rectangle.position.x,
-      rectangle.position.y,
+      rectangle.bottomLeft.x,
+      rectangle.bottomLeft.y,
       rectangle.dimensions.x,
       rectangle.dimensions.y
     )

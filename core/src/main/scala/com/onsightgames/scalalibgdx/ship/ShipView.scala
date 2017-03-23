@@ -11,8 +11,8 @@ object ShipView extends View[Ship] {
   override def render(ship: Ship, batch: SpriteBatch): Unit = {
     batch.draw(
       texture,
-      ship.boundingBox.position.x,
-      ship.boundingBox.position.y,
+      ship.boundingBox.bottomLeft.x,
+      ship.boundingBox.bottomLeft.y,
       ship.boundingBox.dimensions.x,
       ship.boundingBox.dimensions.y
     )
