@@ -1,7 +1,7 @@
 package com.onsightgames.scalalibgdx.ship
 
-import com.onsightgames.scalalibgdx.libgdx.Vector2
-import com.onsightgames.scalalibgdx.Entity
+import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
+import com.onsightgames.scalalibgdx.{Entity, HasBoundingBox}
 
 object Ship {
 
@@ -10,23 +10,23 @@ object Ship {
 }
 
 case class Ship(
-  dimensions   : Vector2,
-  position     : Vector2,
+  boundingBox  : Rectangle,
   velocity     : Vector2,
   acceleration : Vector2
 )
-  extends Entity {
+  extends Entity
+  with HasBoundingBox {
 
   import Ship._
 
   def update() : Ship = {
     val newVelocity = dampen(velocity + acceleration)
 
-    val newPosition = position + newVelocity
-    copy(position = newPosition, velocity = newVelocity)
+    val newBounds = boundingBox translate newVelocity
+    copy(boundingBox = newBounds, velocity = newVelocity)
   }
 
-  def accelerate(vector: Vector2) = {
+  def accelerate(vector: Vector2): Ship = {
     copy(acceleration = acceleration + vector)
   }
 

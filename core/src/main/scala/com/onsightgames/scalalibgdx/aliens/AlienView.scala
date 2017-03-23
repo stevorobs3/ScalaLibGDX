@@ -16,6 +16,6 @@ object AlienView extends View[Alien] {
   private val animation = Animation(2f, simpleAlienTextures, PlayMode.LOOP)
 
   override def render(alien : Alien, batch : SpriteBatch): Unit = {
-    animation.render(alien.position, alien.dimensions, alien.currentTime)(batch)
+    animation.render(alien.boundingBox, alien.currentTime)(batch)
   }
 }

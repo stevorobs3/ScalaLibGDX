@@ -29,11 +29,11 @@ case class AlienFleet(aliens : Matrix[Alien], movingRight : Boolean, velocity : 
   }
 
   private def rightMost(aliens: List[Alien]) = {
-    find(aliens)((alien1, alien2) => alien1.position.x > alien2.position.x)
+    find(aliens)((alien1, alien2) => alien1.isRightOf(alien2))
   }
 
   private def leftMost(aliens: List[Alien]) = {
-    find(aliens)((alien1, alien2) => alien1.position.x < alien2.position.x)
+    find(aliens)((alien1, alien2) => alien1.isLeftOf(alien2))
   }
 
   private def find(aliens: List[Alien])(f : (Alien, Alien) => Boolean) = {
@@ -47,7 +47,7 @@ case class AlienFleet(aliens : Matrix[Alien], movingRight : Boolean, velocity : 
   private def transformAlien(alien : Alien, timeElapsed : Float, moveRight : Boolean) : Alien = {
     alien.copy(
       currentTime = alien.currentTime + timeElapsed,
-      position    = alien.position + calculatePositionChange(timeElapsed, moveRight)
+      boundingBox = alien.boundingBox.translate(calculatePositionChange(timeElapsed, moveRight))
     )
   }
 

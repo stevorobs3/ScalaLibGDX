@@ -43,7 +43,7 @@ object AlienFleetFactory {
               alien.height.toInt,
               alienFleetData
             )
-            alien.copy(position = position)
+            alien.copy(boundingBox = alien.boundingBox.copy(position = position))
         }
     }
   }
