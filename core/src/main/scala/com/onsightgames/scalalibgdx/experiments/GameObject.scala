@@ -1,3 +1,3 @@
 package com.onsightgames.scalalibgdx.experiments
 
-trait GameObject extends Object
+trait GameObject extends LObject

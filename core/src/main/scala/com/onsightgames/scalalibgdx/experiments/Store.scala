@@ -1,20 +1,30 @@
 package com.onsightgames.scalalibgdx.experiments
 
 import java.util.UUID
-import com.onsightgames.scalalibgdx.experiments.events.EventDetector
+
+import com.onsightgames.scalalibgdx.experiments.events.CoreGameEvents.Update
+import com.onsightgames.scalalibgdx.experiments.events.{CoreGameEvents, EventDetector}
 
 case class StoreData(
   reducers       : Map[UUID, Reducer[GameObject]],
+  renderers      : Seq[Renderer[GameObject]],
   eventDetectors : Map[UUID, EventDetector],
-  gameObjects    : Iterator[GameObject]
+  gameObjects    : Seq[GameObject]
 )
 
 trait Store {
-  var storeData : StoreData
+  val coreGameEvents = CoreGameEvents(this)
+  var storeData: StoreData = StoreData(
+    Map.empty,
+    Seq.empty,
+    Map((coreGameEvents.id, coreGameEvents)),
+    Seq.empty
+  )
 
-  def processEvents() : Unit = {
-    val events = storeData.eventDetectors.values.flatMap(_.generate)
-    processEvents(events)
+  def processUpdate(update : Update) : Unit = {
+    val events = storeData.eventDetectors.values.flatMap(_.generate).toSeq
+    processEvents(events :+ update)
+    processRendering()
   }
 
   def processEvents(events : Any*) : Unit = {
@@ -25,6 +35,10 @@ trait Store {
       }
     }
     storeData = storeData.copy(gameObjects = gameObjects)
+  }
+
+  private def processRendering() = {
+
   }
 
   // initial list of reducers
