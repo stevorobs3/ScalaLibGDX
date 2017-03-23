@@ -4,10 +4,19 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.{Gdx, Screen}
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.onsightgames.scalalibgdx.events.{KeyboardEventEmitter, LifecycleEventEmitter}
+import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 
 object SpaceInvaders {
 
-  private val components : Set[Component[_ <: Entity]] = Level.One.components
+  private val screen = Rectangle(
+    position   = Vector2.Zero,
+    dimensions = Vector2(
+      x = Gdx.graphics.getWidth.toFloat,
+      y = Gdx.graphics.getHeight.toFloat
+    )
+  )
+
+  private val components : Set[Component[_ <: Entity]] = Level.first(screen).components
 
   private val store = new Store(components)
 

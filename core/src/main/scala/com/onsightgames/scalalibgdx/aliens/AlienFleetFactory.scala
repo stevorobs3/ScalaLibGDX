@@ -1,25 +1,27 @@
 package com.onsightgames.scalalibgdx.aliens
 
-import com.badlogic.gdx.Gdx
 import com.onsightgames.scalalibgdx.Component
 import com.onsightgames.scalalibgdx.Math.Matrix
-import com.onsightgames.scalalibgdx.libgdx.Vector2
+import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 
 object AlienFleetFactory {
   private val BottomGap = 200
   private val TopGap = 100
 
-  def buildComponent(alienFleetData: AlienFleetInitialData) : Component[AlienFleet] = {
+  def buildComponent(
+    alienFleetData : AlienFleetInitialData,
+    screen         : Rectangle
+  ) : Component[AlienFleet] = {
     Component(
-      state   = buildState(alienFleetData),
+      state   = buildState(alienFleetData, screen),
       reducer = AlienFleetReducer,
       views   = Set(AlienFleetView)
     )
   }
 
-  def buildState(alienFleetData : AlienFleetInitialData) : AlienFleet = {
+  def buildState(alienFleetData : AlienFleetInitialData, screen : Rectangle) : AlienFleet = {
     AlienFleet(
-      aliens      = setupFormation(buildAliens(alienFleetData), alienFleetData),
+      aliens      = setupFormation(buildAliens(alienFleetData), alienFleetData, screen),
       velocity    = alienFleetData.velocity,
       movingRight = true
     )
@@ -31,7 +33,11 @@ object AlienFleetFactory {
     )
   }
 
-  private def setupFormation(aliens: Matrix[Alien], alienFleetData : AlienFleetInitialData) = {
+  private def setupFormation(
+    aliens         : Matrix[Alien],
+    alienFleetData : AlienFleetInitialData,
+    screen         : Rectangle
+  ) = {
     aliens.zipWithIndex.map{
       case (alienRow, rowNum) =>
         alienRow.zipWithIndex.map{
@@ -41,7 +47,8 @@ object AlienFleetFactory {
               colNum,
               alien.width.toInt,
               alien.height.toInt,
-              alienFleetData
+              alienFleetData,
+              screen
             )
             alien.copy(boundingBox = alien.boundingBox.copy(position = position))
         }
@@ -53,17 +60,16 @@ object AlienFleetFactory {
     colNum      : Int,
     alienWidth  : Int,
     alienHeight : Int,
-    fleetData   : AlienFleetInitialData
+    fleetData   : AlienFleetInitialData,
+    screen      : Rectangle
   ) : Vector2 = {
-    val xSpacing = (formationWidth - fleetData.width * alienWidth.toFloat) / fleetData.width
-    val ySpacing = (formationHeight - fleetData.height * alienHeight) / fleetData.height
+    val xSpacing = (formationWidth(screen) - fleetData.width * alienWidth.toFloat) / fleetData.width
+    val ySpacing = (formationHeight(screen) - fleetData.height * alienHeight) / fleetData.height
     val x = AlienFleet.SideGap + (colNum + 0.5f) * xSpacing + colNum * alienWidth
     val y = BottomGap + (rowNum + 0.5f) * ySpacing + rowNum * alienHeight
     Vector2(x, y)
   }
 
-  private def screenWidth = Gdx.graphics.getWidth
-  private def screenHeight = Gdx.graphics.getHeight
-  private def formationWidth = screenWidth - 2 * AlienFleet.SideGap
-  private def formationHeight = screenHeight - TopGap - BottomGap
+  private def formationWidth(screen : Rectangle) = screen.width - 2 * AlienFleet.SideGap
+  private def formationHeight(screen : Rectangle) = screen.height - TopGap - BottomGap
 }

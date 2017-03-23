@@ -1,17 +1,16 @@
 package com.onsightgames.scalalibgdx
 
-import com.badlogic.gdx.Gdx
 import com.onsightgames.scalalibgdx.aliens.{Alien, AlienFleet, AlienFleetFactory, AlienFleetInitialData}
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 import com.onsightgames.scalalibgdx.ship.{Ship, ShipReducer, ShipView}
 
 object Level {
-  lazy val One : Level = Level(
+  def first(screen: Rectangle) : Level = Level(
     Component[Ship](
       state = Ship(
         boundingBox = Rectangle(
           dimensions = Vector2(40f, 40f),
-          position   = Vector2(Gdx.graphics.getWidth / 2f, Gdx.graphics.getHeight / 10f)
+          position   = Vector2(screen.width / 2f, screen.height / 10f)
         ),
         velocity     = Vector2.Zero,
         acceleration = Vector2.Zero
@@ -19,7 +18,10 @@ object Level {
       reducer = ShipReducer,
       views   = Set(ShipView)
     ),
-    AlienFleetFactory.buildComponent(AlienFleetInitialData(5, 10, Vector2(10f, -2f), Alien.simple))
+    AlienFleetFactory.buildComponent(
+      AlienFleetInitialData(5, 10, Vector2(10f, -2f), Alien.simple),
+      screen
+    )
   )
 }
 
