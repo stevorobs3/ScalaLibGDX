@@ -3,7 +3,7 @@ package com.onsightgames.scalalibgdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.{Gdx, Screen}
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.onsightgames.scalalibgdx.events.LifecycleEventEmitter
+import com.onsightgames.scalalibgdx.events.{KeyboardEventEmitter, LifecycleEventEmitter}
 import com.onsightgames.scalalibgdx.libgdx.Vector2
 import com.onsightgames.scalalibgdx.ship.{Ship, ShipReducer, ShipView}
 
@@ -25,6 +25,7 @@ object ExampleGame {
   private val store = new Store(components)
 
   private val lifecycleEventEmitter = new LifecycleEventEmitter(store.dispatch, render)
+  private val keyboardEventEmitter  = new KeyboardEventEmitter(store.dispatch)
 
   private lazy val batch  = new SpriteBatch
 
@@ -36,7 +37,8 @@ object ExampleGame {
     batch.end()
   }
 
-  def asScreen : Screen = {
+  def start : Screen = {
+    keyboardEventEmitter.start()
     lifecycleEventEmitter
   }
 
