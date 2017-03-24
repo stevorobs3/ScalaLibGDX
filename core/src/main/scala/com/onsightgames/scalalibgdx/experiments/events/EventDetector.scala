@@ -1,7 +1,5 @@
 package com.onsightgames.scalalibgdx.experiments.events
 
-import com.onsightgames.scalalibgdx.experiments.LObject
-
-trait EventDetector extends LObject {
+trait EventDetector {
   def generate : List[Any]
 }
