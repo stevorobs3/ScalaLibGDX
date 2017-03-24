@@ -9,13 +9,13 @@ object CoreGameEvents {
   def apply(store : Store) : CoreGameEvents = new CoreGameEvents(store)
 
   sealed trait Event
-  case object Hide                                       extends Event
-  case class  Resize(width : Int, height : Int)          extends Event
-  case class  Update(delta : Float, batch : SpriteBatch) extends Event
-  case object Dispose                                    extends Event
-  case object Pause                                      extends Event
-  case object Show                                       extends Event
-  case object Resume                                     extends Event
+  case object Hide                              extends Event
+  case class  Resize(width : Int, height : Int) extends Event
+  case class  Update(delta : Float)             extends Event
+  case object Dispose                           extends Event
+  case object Pause                             extends Event
+  case object Show                              extends Event
+  case object Resume                            extends Event
 
 }
 
@@ -32,7 +32,8 @@ class CoreGameEvents(store : Store) extends Screen with EventDetector {
     Gdx.gl.glClearColor(0,0,0,1)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     batch.begin()
-    store processUpdate Update(delta, batch)
+    store processUpdate Update(delta)
+    store processRendering batch
     batch.end()
   }
 

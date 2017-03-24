@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.{Gdx, Screen}
 
 class SpaceInvaders extends Screen
-  with HasLogger {
+  with Logging {
   override def hide(): Unit = {
     info("Hiding")
   }
@@ -32,7 +32,6 @@ class SpaceInvaders extends Screen
 
   private lazy val batch  = new SpriteBatch
 
-  private val alienFleet = new AlienFleet(Level.One.alienFleet)
   private val ship       = Ship.atStartingPosition
 
   override val LogId: String = "SpaceInvaders"
@@ -40,7 +39,6 @@ class SpaceInvaders extends Screen
   Gdx.input.setInputProcessor(new KeyboardAdapter(ship))
 
   private def update(delta : Float) : Unit = {
-    alienFleet.update(delta)
     ship.update()
   }
 
@@ -53,7 +51,6 @@ class SpaceInvaders extends Screen
   }
 
   private def renderEntities(batch : SpriteBatch) : Unit = {
-    alienFleet.render(batch)
     ship.render(batch)
   }
 }

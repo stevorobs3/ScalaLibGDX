@@ -2,7 +2,7 @@ package com.onsightgames.scalalibgdx.libgdx
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
-import com.badlogic.gdx.graphics.g2d.{Sprite, SpriteBatch, Animation => LAnimation}
+import com.badlogic.gdx.graphics.g2d.{Sprite, Animation => LAnimation}
 import com.onsightgames.scalalibgdx.LArrayUtil._
 
 case class Animation (
@@ -24,17 +24,8 @@ case class Animation (
     playMode
   )
 
+  def currentFrame(currentTime : Float) : Sprite  = lAnimation.getKeyFrame(currentTime)
+
   def width  : Float = lAnimation.getKeyFrames.head.getWidth
   def height : Float = lAnimation.getKeyFrames.head.getHeight
-
-  def render(
-    position    : Vector2,
-    scale       : Float,
-    currentTime : Float
-  )(batch : SpriteBatch) : Unit = {
-    val sprite = lAnimation.getKeyFrame(currentTime)
-    sprite.setPosition(position.x, position.y)
-    sprite.setScale(scale)
-    sprite.draw(batch)
-  }
 }

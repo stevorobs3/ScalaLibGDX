@@ -1,8 +1,8 @@
-package com.onsightgames.scalalibgdx
+package com.onsightgames.scalalibgdx.spaceinvaders.objects
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.onsightgames.scalalibgdx.libgdx.{Animation, Vector2}
 
 object Alien {
@@ -29,12 +29,10 @@ case class Alien private (
 ) {
   private val animation = Animation(framesPerSecond, textures, PlayMode.LOOP)
 
+  def currentFrame : Sprite = animation.currentFrame(currentTime)
+
   def width     : Float = animation.width
   def height    : Float = animation.height
   def rightEdge : Float = position.x + width
   def leftEdge  : Float = position.x
-
-  def render(batch : SpriteBatch) : Unit = {
-    animation.render(position, scale, currentTime)(batch)
-  }
 }

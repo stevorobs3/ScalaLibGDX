@@ -1,3 +1,7 @@
 package com.onsightgames.scalalibgdx.experiments
 
-trait GameObject extends LObject
+import java.util.UUID
+
+trait GameObject {
+  val id : UUID
+}

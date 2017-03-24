@@ -1,7 +1,9 @@
 package com.onsightgames.scalalibgdx.experiments
 
-trait Reducer[State] {
-  val initialState : State
+import com.onsightgames.scalalibgdx.Logging
 
-  def reduce : PartialFunction[(State, Any), State]
+trait Reducer[State <: GameObject] extends Logging {
+  def reduce : PartialFunction[(GameObject, Any), GameObject]
+
+  def create : Reducer[GameObject] = this.asInstanceOf[Reducer[GameObject]]
 }

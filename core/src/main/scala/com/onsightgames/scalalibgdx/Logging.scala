@@ -2,7 +2,7 @@ package com.onsightgames.scalalibgdx
 
 import com.badlogic.gdx.Gdx
 
-trait HasLogger {
+trait Logging {
   val LogId : String
 
   def debug(message : String) : Unit = {

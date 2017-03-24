@@ -1,9 +1,13 @@
 package com.onsightgames.scalalibgdx
 
+import java.util.UUID
+
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
+import com.onsightgames.scalalibgdx.experiments.GameObject
+import com.onsightgames.scalalibgdx.spaceinvaders.objects.Alien
 
 object Ship {
 
@@ -12,13 +16,19 @@ object Ship {
 
   val atStartingPosition = Ship(
     new Vector2(Gdx.graphics.getWidth / 2f, Gdx.graphics.getHeight / 10f),
-    Alien.SimpleAlienScale
+    Alien.SimpleAlienScale,
+    UUID.randomUUID()
   )
 }
 
-case class Ship private (startingPosition: Vector2, scale : Float)
+case class Ship private (
+  startingPosition : Vector2,
+  scale            : Float,
+  override val id  : UUID
+)
   extends KeyboardAdapter.Listener
-  with HasLogger {
+  with Logging
+  with GameObject {
 
   import Ship._
 

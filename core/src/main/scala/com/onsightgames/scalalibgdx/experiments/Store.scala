@@ -3,6 +3,7 @@ package com.onsightgames.scalalibgdx.experiments
 import java.util.UUID
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.onsightgames.scalalibgdx.Logging
 import com.onsightgames.scalalibgdx.experiments.events.CoreGameEvents.Update
 import com.onsightgames.scalalibgdx.experiments.events.{CoreGameEvents, EventDetector}
 
@@ -13,9 +14,9 @@ case class StoreData(
   gameObjects    : Map[UUID,GameObject]
 )
 
-trait Store {
+trait Store extends Logging{
   val coreGameEvents = CoreGameEvents(this)
-  var storeData: StoreData = StoreData(
+  var storeData : StoreData = StoreData(
     Map.empty,
     Map.empty,
     Seq(coreGameEvents),
@@ -24,8 +25,14 @@ trait Store {
 
   def processUpdate(update : Update) : Unit = {
     val events = storeData.eventDetectors.flatMap(_.generate)
-    processEvents(events :+ update)
-    processRendering(update.batch)
+    processEvents(events :+ update : _*)
+  }
+
+  def processRendering(batch : SpriteBatch) : Unit = {
+    storeData.renderers.foreach{
+      case (gameObjectId, renderer) =>
+        renderer.render(storeData.gameObjects(gameObjectId), batch)
+    }
   }
 
   def processEvents(events : Any*) : Unit = {
@@ -38,12 +45,7 @@ trait Store {
     storeData = storeData.copy(gameObjects = gameObjects)
   }
 
-  private def processRendering(batch : SpriteBatch) = {
-    storeData.renderers.foreach{
-      case (gameObjectId, renderer) =>
-        renderer.render(storeData.gameObjects(gameObjectId), batch)
-    }
-  }
+
 
   // initial list of reducers
 
