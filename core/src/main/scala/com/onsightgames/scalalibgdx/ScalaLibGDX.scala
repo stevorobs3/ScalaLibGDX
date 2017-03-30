@@ -9,8 +9,7 @@ object ScalaLibGDX {
 }
 
 class ScalaLibGDX extends Game
- with HasLogger {
-  val LogId = "ScalaLibGDX"
+ with Logging {
 
   override def create(): Unit = {
     setScreen(SpaceInvaders.start)

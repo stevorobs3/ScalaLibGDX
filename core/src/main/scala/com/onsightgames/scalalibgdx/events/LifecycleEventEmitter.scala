@@ -1,7 +1,7 @@
 package com.onsightgames.scalalibgdx.events
 
 import com.badlogic.gdx.Screen
-import com.onsightgames.scalalibgdx.HasLogger
+import com.onsightgames.scalalibgdx.Logging
 
 object LifecycleEventEmitter {
   case class  Update(timeElapsed : Float)       extends Event
@@ -19,9 +19,7 @@ class LifecycleEventEmitter(
   dispatch : Event => Unit
 )
   extends Screen
-  with HasLogger {
-
-  override val LogId: String = "LifecycleEventEmitter"
+  with Logging {
 
   import LifecycleEventEmitter._
 

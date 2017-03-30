@@ -2,8 +2,8 @@ package com.onsightgames.scalalibgdx
 
 import com.badlogic.gdx.Gdx
 
-trait HasLogger {
-  val LogId : String
+trait Logging {
+  private val LogId : String = getClass.toString.split('.').toList.last
 
   def debug(message : String) : Unit = {
     Gdx.app.debug(LogId, message)
