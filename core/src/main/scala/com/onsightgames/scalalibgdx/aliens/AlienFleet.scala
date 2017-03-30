@@ -1,9 +1,8 @@
 package com.onsightgames.scalalibgdx.aliens
 
-import com.badlogic.gdx.Gdx
-import com.onsightgames.scalalibgdx.Entity
 import com.onsightgames.scalalibgdx.Math.Matrix
 import com.onsightgames.scalalibgdx.libgdx.Vector2
+import com.onsightgames.scalalibgdx.{Entity, SpaceInvaders}
 
 object AlienFleet {
   val SideGap = 20
@@ -23,7 +22,8 @@ case class AlienFleet(
     lazy val rightMostAlien = rightMost(allAliens)
     lazy val leftMostAlien  = leftMost(allAliens)
     lazy val tooFarLeft     = leftMostAlien.boundingBox.leftEdge - SideGap <= 0
-    lazy val tooFarRight    = rightMostAlien.boundingBox.rightEdge + SideGap >= Gdx.graphics.getWidth
+    lazy val tooFarRight    =
+      rightMostAlien.boundingBox.rightEdge + SideGap >= SpaceInvaders.ScreenWidth
     val newMovingRight = (movingRight && !tooFarRight) || tooFarLeft
 
     val newAliens = aliens.map { alienRow =>
