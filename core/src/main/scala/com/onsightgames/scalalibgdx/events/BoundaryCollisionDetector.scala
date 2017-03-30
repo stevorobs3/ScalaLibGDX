@@ -31,7 +31,7 @@ class BoundaryCollisionDetector {
   import BoundaryCollisionDetector._
 
   def run(screen : Rectangle, entities : Iterable[Entity]) : Iterable[Event] = {
-    entities.foldLeft(Set[Event]()) {
+    entities.foldLeft(Set.empty[Event]) {
       case (events, entity : BoundedEntity) => events ++ detectBoundaryEvents(screen, entity)
       case (events, _)                      => events
     }
@@ -48,16 +48,16 @@ class BoundaryCollisionDetector {
   }
 
   private def detectBoundaryTouched(screen: Rectangle, rectangle: Rectangle) = {
-    if (screen.leftEdge > rectangle.leftEdge)          Boundary.Left
-    else if (screen.rightEdge < rectangle.rightEdge)   Boundary.Right
+    if      (screen.leftEdge   > rectangle.leftEdge)   Boundary.Left
+    else if (screen.rightEdge  < rectangle.rightEdge)  Boundary.Right
     else if (screen.bottomEdge > rectangle.bottomEdge) Boundary.Bottom
     else                                               Boundary.Top
   }
 
   private def detectBoundaryCrossed(screen: Rectangle, rectangle: Rectangle) = {
-    if (screen.leftEdge > rectangle.rightEdge)      Boundary.Left
-    else if (screen.rightEdge < rectangle.leftEdge) Boundary.Right
-    else if (screen.bottomEdge > rectangle.topEdge) Boundary.Bottom
-    else                                            Boundary.Top
+    if      (screen.leftEdge   > rectangle.rightEdge) Boundary.Left
+    else if (screen.rightEdge  < rectangle.leftEdge)  Boundary.Right
+    else if (screen.bottomEdge > rectangle.topEdge)   Boundary.Bottom
+    else                                              Boundary.Top
   }
 }
