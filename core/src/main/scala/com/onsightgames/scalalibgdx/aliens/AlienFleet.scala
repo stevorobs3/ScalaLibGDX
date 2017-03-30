@@ -9,7 +9,12 @@ object AlienFleet {
   val SideGap = 20
 }
 
-case class AlienFleet(aliens : Matrix[Alien], movingRight : Boolean, velocity : Vector2)
+case class AlienFleet(
+  aliens      : Matrix[Alien],
+  movingRight : Boolean,
+  velocity    : Vector2,
+  id          : Entity.Id = Entity.newId
+)
   extends Entity {
   import AlienFleet._
 
