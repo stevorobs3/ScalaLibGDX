@@ -10,7 +10,7 @@ case class Store(private var _components : Set[Component[_ <: Entity]]) {
     _components = _components.map(_ update event)
   }
 
-  def getState : Iterable[Entity] = {
+  def state : Iterable[Entity] = {
     _components.map(_.state)
   }
 

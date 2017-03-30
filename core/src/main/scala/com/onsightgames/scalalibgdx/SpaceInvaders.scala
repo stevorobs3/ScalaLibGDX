@@ -38,7 +38,7 @@ object SpaceInvaders {
   def update(updateEvent : Update) : Unit = {
     store.dispatch(updateEvent)
     boundaryCollisionDetector
-      .run(screen, store.getState)
+      .run(screen, store.state)
       .foreach(store.dispatch)
   }
 
