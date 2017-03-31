@@ -5,25 +5,20 @@ import com.onsightgames.scalalibgdx.Math.Matrix
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 
 object AlienFleetFactory {
-  private val BottomGap = 200
-  private val TopGap = 100
-
-  def buildComponent(
-    alienFleetData : AlienFleetInitialData,
-    screen         : Rectangle
-  ) : Component[AlienFleet] = {
+  def buildComponent(alienFleetData : AlienFleetInitialData) : Component[AlienFleet] = {
     Component(
-      state   = buildState(alienFleetData, screen),
+      state   = buildState(alienFleetData),
       reducer = AlienFleetReducer,
       views   = Set(AlienFleetView)
     )
   }
 
-  def buildState(alienFleetData : AlienFleetInitialData, screen : Rectangle) : AlienFleet = {
+  def buildState(alienFleetData : AlienFleetInitialData) : AlienFleet = {
     AlienFleet(
-      aliens      = setupFormation(buildAliens(alienFleetData), alienFleetData, screen),
-      velocity    = alienFleetData.velocity,
-      movingRight = true
+      aliens       = setupFormation(buildAliens(alienFleetData), alienFleetData),
+      boundingBox  = alienFleetData.boundingBox,
+      velocity     = alienFleetData.velocity,
+      acceleration = alienFleetData.acceleration
     )
   }
 
@@ -33,11 +28,7 @@ object AlienFleetFactory {
     )
   }
 
-  private def setupFormation(
-    aliens         : Matrix[Alien],
-    alienFleetData : AlienFleetInitialData,
-    screen         : Rectangle
-  ) = {
+  private def setupFormation(aliens : Matrix[Alien], alienFleetData : AlienFleetInitialData) = {
     aliens.zipWithIndex.map{
       case (alienRow, rowNum) =>
         alienRow.zipWithIndex.map{
@@ -45,10 +36,8 @@ object AlienFleetFactory {
             val position = calculateAlienPosition(
               rowNum,
               colNum,
-              alien.boundingBox.width.toInt,
-              alien.boundingBox.height.toInt,
-              alienFleetData,
-              screen
+              alien.boundingBox,
+              alienFleetData
             )
             alien.copy(boundingBox = alien.boundingBox.copy(bottomLeft = position))
         }
@@ -58,18 +47,16 @@ object AlienFleetFactory {
   private def calculateAlienPosition(
     rowNum      : Int,
     colNum      : Int,
-    alienWidth  : Int,
-    alienHeight : Int,
-    fleetData   : AlienFleetInitialData,
-    screen      : Rectangle
+    alienBounds : Rectangle,
+    fleetData   : AlienFleetInitialData
   ) : Vector2 = {
-    val xSpacing = (formationWidth(screen) - fleetData.width * alienWidth.toFloat) / fleetData.width
-    val ySpacing = (formationHeight(screen) - fleetData.height * alienHeight) / fleetData.height
-    val x = AlienFleet.SideGap + (colNum + 0.5f) * xSpacing + colNum * alienWidth
-    val y = BottomGap + (rowNum + 0.5f) * ySpacing + rowNum * alienHeight
+    val fleetBounds = fleetData.boundingBox
+    val xSpacing = (fleetBounds.width - fleetData.width * alienBounds.width) / fleetData.width
+    val ySpacing = (fleetBounds.height - fleetData.height * alienBounds.height) / fleetData.height
+    val x = fleetBounds.bottomLeft.x + (colNum + 0.5f) * xSpacing + colNum * alienBounds.width
+    val y = fleetBounds.bottomLeft.y + (rowNum + 0.5f) * ySpacing + rowNum * alienBounds.height
     Vector2(x, y)
   }
 
-  private def formationWidth(screen : Rectangle) = screen.width - 2 * AlienFleet.SideGap
-  private def formationHeight(screen : Rectangle) = screen.height - TopGap - BottomGap
+
 }

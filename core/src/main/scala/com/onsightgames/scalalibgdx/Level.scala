@@ -18,10 +18,17 @@ object Level {
       reducer = ShipReducer,
       views   = Set(ShipView)
     ),
-    AlienFleetFactory.buildComponent(
-      AlienFleetInitialData(5, 10, Vector2(10f, -2f), Alien.simple),
-      screen
-    )
+    AlienFleetFactory.buildComponent(AlienFleetInitialData(
+      boundingBox  = Rectangle(
+        bottomLeft = Vector2(screen.width * 0.05f, screen.height * 0.4f),
+        dimensions = Vector2(screen.width * 0.9f, screen.height * 0.5f)
+      ),
+      width        = 10,
+      height       = 5,
+      velocity     = Vector2(10f, -2f),
+      acceleration = Vector2.Zero,
+      alien        = Alien.simple
+    ))
   )
 }
 
