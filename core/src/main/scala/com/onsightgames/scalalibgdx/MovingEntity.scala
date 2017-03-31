@@ -10,9 +10,9 @@ trait MovingEntity[EntityType <: MovingEntity[EntityType]] extends BoundedEntity
 
   def withAcceleration(newAcceleration : Vector2) : EntityType
 
-  def update() : EntityType = {
+  def update(timeElapsed : Float) : EntityType = {
     val newVelocity = calculateNextVelocity()
-    val newBounds = boundingBox translate newVelocity
+    val newBounds = boundingBox translate (newVelocity * timeElapsed)
     update(newBounds, newVelocity)
   }
 

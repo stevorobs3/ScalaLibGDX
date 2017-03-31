@@ -8,19 +8,21 @@ import com.onsightgames.scalalibgdx.events.LifecycleEventEmitter.Update
 import com.onsightgames.scalalibgdx.libgdx.Vector2
 
 object ShipReducer extends Reducer[Ship] {
+  
+  val Acceleration = 15f
 
   override def reduce: PartialFunction[(Ship, Event), Ship] = {
-    case (ship, _: Update)               => ship.update()
+    case (ship, Update(timeElapsed))               => ship.update(timeElapsed)
 
-    case (ship, KeyDownEvent(Key.Left))  => ship.withAcceleration(Vector2(-1f, 0))
-    case (ship, KeyDownEvent(Key.Right)) => ship.withAcceleration(Vector2(+1f, 0))
-    case (ship, KeyDownEvent(Key.Down))  => ship.withAcceleration(Vector2(0, -1f))
-    case (ship, KeyDownEvent(Key.Up))    => ship.withAcceleration(Vector2(0, +1f))
+    case (ship, KeyDownEvent(Key.Left))  => ship.withAcceleration(Vector2(-Acceleration, 0))
+    case (ship, KeyDownEvent(Key.Right)) => ship.withAcceleration(Vector2(+Acceleration, 0))
+    case (ship, KeyDownEvent(Key.Down))  => ship.withAcceleration(Vector2(0, -Acceleration))
+    case (ship, KeyDownEvent(Key.Up))    => ship.withAcceleration(Vector2(0, +Acceleration))
 
-    case (ship, KeyUpEvent(Key.Left))    => ship.withAcceleration(Vector2(+1f, 0))
-    case (ship, KeyUpEvent(Key.Right))   => ship.withAcceleration(Vector2(-1f, 0))
-    case (ship, KeyUpEvent(Key.Down))    => ship.withAcceleration(Vector2(0, +1f))
-    case (ship, KeyUpEvent(Key.Up))      => ship.withAcceleration(Vector2(0, -1f))
+    case (ship, KeyUpEvent(Key.Left))    => ship.withAcceleration(Vector2(+Acceleration, 0))
+    case (ship, KeyUpEvent(Key.Right))   => ship.withAcceleration(Vector2(-Acceleration, 0))
+    case (ship, KeyUpEvent(Key.Down))    => ship.withAcceleration(Vector2(0, +Acceleration))
+    case (ship, KeyUpEvent(Key.Up))      => ship.withAcceleration(Vector2(0, -Acceleration))
 
     case (ship, boundaryCrossed : BoundaryCrossed) if boundaryCrossed.isTarget(ship) =>
       wrapScreen(ship, boundaryCrossed)
