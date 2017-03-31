@@ -29,10 +29,6 @@ case class Ship(
     copy(acceleration = acceleration + vector)
   }
 
-  def positiveModulus(dividend : Float, divisor : Float) : Float = {
-    ((dividend % divisor) + divisor) % divisor
-  }
-
   private def dampen(vector : Vector2) : Vector2 = {
     Vector2(dampen(vector.x), dampen(vector.y))
   }

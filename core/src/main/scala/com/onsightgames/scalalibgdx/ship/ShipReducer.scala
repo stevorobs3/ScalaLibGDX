@@ -27,15 +27,14 @@ object ShipReducer extends Reducer[Ship] {
   }
 
   private def wrapScreen(ship: Ship, boundaryCrossed: BoundaryCrossed) = {
-    val position = ship.boundingBox.bottomLeft
-    val screen   = boundaryCrossed.screen
+    val screen = boundaryCrossed.screen
 
-    val newPosition = boundaryCrossed.boundary match {
-      case Boundary.Left   => position.copy(x = position.x + screen.width)
-      case Boundary.Right  => position.copy(x = position.x - screen.width)
-      case Boundary.Bottom => position.copy(y = position.y + screen.height)
-      case Boundary.Top    => position.copy(y = position.y - screen.height)
+    val positionChange = boundaryCrossed.boundary match {
+      case Boundary.Left   => Vector2(x = +screen.width, y = 0)
+      case Boundary.Right  => Vector2(x = -screen.width, y = 0)
+      case Boundary.Bottom => Vector2(x = 0, y = +screen.height)
+      case Boundary.Top    => Vector2(x = 0, y = -screen.height)
     }
-    ship.copy(boundingBox = ship.boundingBox.copy(bottomLeft = newPosition))
+    ship.copy(boundingBox = ship.boundingBox.translate(positionChange))
   }
 }
