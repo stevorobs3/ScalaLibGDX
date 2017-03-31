@@ -12,15 +12,15 @@ object ShipReducer extends Reducer[Ship] {
   override def reduce: PartialFunction[(Ship, Event), Ship] = {
     case (ship, _: Update)               => ship.update()
 
-    case (ship, KeyDownEvent(Key.Left))  => ship.accelerate(Vector2(-1f, 0))
-    case (ship, KeyDownEvent(Key.Right)) => ship.accelerate(Vector2(+1f, 0))
-    case (ship, KeyDownEvent(Key.Down))  => ship.accelerate(Vector2(0, -1f))
-    case (ship, KeyDownEvent(Key.Up))    => ship.accelerate(Vector2(0, +1f))
+    case (ship, KeyDownEvent(Key.Left))  => ship.withAcceleration(Vector2(-1f, 0))
+    case (ship, KeyDownEvent(Key.Right)) => ship.withAcceleration(Vector2(+1f, 0))
+    case (ship, KeyDownEvent(Key.Down))  => ship.withAcceleration(Vector2(0, -1f))
+    case (ship, KeyDownEvent(Key.Up))    => ship.withAcceleration(Vector2(0, +1f))
 
-    case (ship, KeyUpEvent(Key.Left))    => ship.accelerate(Vector2(+1f, 0))
-    case (ship, KeyUpEvent(Key.Right))   => ship.accelerate(Vector2(-1f, 0))
-    case (ship, KeyUpEvent(Key.Down))    => ship.accelerate(Vector2(0, +1f))
-    case (ship, KeyUpEvent(Key.Up))      => ship.accelerate(Vector2(0, -1f))
+    case (ship, KeyUpEvent(Key.Left))    => ship.withAcceleration(Vector2(+1f, 0))
+    case (ship, KeyUpEvent(Key.Right))   => ship.withAcceleration(Vector2(-1f, 0))
+    case (ship, KeyUpEvent(Key.Down))    => ship.withAcceleration(Vector2(0, +1f))
+    case (ship, KeyUpEvent(Key.Up))      => ship.withAcceleration(Vector2(0, -1f))
 
     case (ship, boundaryCrossed : BoundaryCrossed) if boundaryCrossed.isTarget(ship) =>
       wrapScreen(ship, boundaryCrossed)

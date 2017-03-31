@@ -1,7 +1,7 @@
 package com.onsightgames.scalalibgdx.ship
 
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
-import com.onsightgames.scalalibgdx.BoundedEntity
+import com.onsightgames.scalalibgdx.MovingEntity
 
 object Ship {
 
@@ -14,18 +14,19 @@ case class Ship(
   velocity     : Vector2,
   acceleration : Vector2
 )
-  extends BoundedEntity {
+  extends MovingEntity[Ship] {
 
   import Ship._
 
-  def update() : Ship = {
-    val newVelocity = dampen(velocity + acceleration)
+  override def calculateNextVelocity() : Vector2 = {
+    dampen(velocity + acceleration)
+  }
 
-    val newBounds = boundingBox translate newVelocity
+  override protected def update(newBounds: Rectangle, newVelocity: Vector2): Ship = {
     copy(boundingBox = newBounds, velocity = newVelocity)
   }
 
-  def accelerate(vector: Vector2): Ship = {
+  def withAcceleration(vector: Vector2): Ship = {
     copy(acceleration = acceleration + vector)
   }
 
