@@ -25,4 +25,7 @@ case class Rectangle(bottomLeft : Vector2, dimensions : Vector2) {
   def rightEdge  : Float = bottomLeft.x + dimensions.x
   def bottomEdge : Float = bottomLeft.y
   def topEdge    : Float = bottomLeft.y + dimensions.y
+
+  def center    : Vector2 = bottomLeft + (dimensions / 2)
+  def topCenter : Vector2 = center + Vector2(0, dimensions.y / 2)
 }

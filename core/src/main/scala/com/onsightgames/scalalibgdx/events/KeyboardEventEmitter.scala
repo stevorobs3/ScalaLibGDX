@@ -11,6 +11,7 @@ object KeyboardEventEmitter {
     case object Right extends Key
     case object Down  extends Key
     case object Up    extends Key
+    case object Space extends Key
 
   }
 
@@ -21,7 +22,8 @@ object KeyboardEventEmitter {
     Keys.LEFT  -> Key.Left,
     Keys.RIGHT -> Key.Right,
     Keys.DOWN  -> Key.Down,
-    Keys.UP    -> Key.Up
+    Keys.UP    -> Key.Up,
+    Keys.SPACE -> Key.Space
   )
 }
 

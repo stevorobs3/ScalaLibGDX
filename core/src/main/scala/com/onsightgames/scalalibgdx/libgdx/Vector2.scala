@@ -6,6 +6,7 @@ object Vector2 {
   import scala.language.implicitConversions
   lazy val Zero  : Vector2 = Vector2(0f, 0f)
   lazy val Down  : Vector2 = Vector2(0f, -1f)
+  lazy val Up    : Vector2 = Vector2(0f, 1f)
   lazy val Right : Vector2 = Vector2(1f, 0f)
   lazy val Left  : Vector2 = Vector2(-1f, 0f)
 
@@ -27,5 +28,9 @@ case class Vector2(x: Float, y: Float) {
 
   def -(other : Vector2) : Vector2 = {
     copy(x - other.x, y - other.y)
+  }
+
+  def /(other : Float) : Vector2 = {
+    copy(x / other, y / other)
   }
 }

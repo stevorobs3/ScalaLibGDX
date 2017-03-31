@@ -12,15 +12,15 @@ object SpaceInvaders {
 
   val screen : Screen = Screen(ScreenWidth, ScreenHeight)
 
-  private val components : Set[Component[_ <: Entity]] = Level.first(screen.rectangle).components
+  private val store = Store(Set.empty)
+  Level.first(screen.rectangle).components.foreach(store.addComponent)
 
-  private val store = Store(components)
 
   private val lifecycleEventEmitter     = new LifecycleEventEmitter(update, render, store.dispatch)
   private val keyboardEventEmitter      = new KeyboardEventEmitter(store.dispatch)
   private val boundaryCollisionDetector = new BoundaryCollisionDetector
 
-  private lazy val batch = new SpriteBatch
+  private lazy val batch  = new SpriteBatch
   private lazy val camera = new OrthographicCamera()
   camera.setToOrtho(false, screen.width.toFloat, screen.height.toFloat)
 

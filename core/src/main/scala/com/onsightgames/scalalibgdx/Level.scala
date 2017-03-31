@@ -1,11 +1,11 @@
 package com.onsightgames.scalalibgdx
 
-import com.onsightgames.scalalibgdx.aliens.{Alien, AlienFleet, AlienFleetFactory, AlienFleetInitialData}
+import com.onsightgames.scalalibgdx.aliens._
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 import com.onsightgames.scalalibgdx.ship.{Ship, ShipReducer, ShipView}
 
 object Level {
-  def first(screen: Rectangle) : Level = Level(
+  def first(screen : Rectangle) : Level = Level(
     Component[Ship](
       state = Ship(
         boundingBox = Rectangle(

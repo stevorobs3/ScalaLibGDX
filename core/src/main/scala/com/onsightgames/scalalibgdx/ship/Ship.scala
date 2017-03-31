@@ -13,11 +13,14 @@ case class Ship(
   boundingBox  : Rectangle,
   velocity     : Vector2,
   acceleration : Vector2,
+
   id           : Entity.Id = Entity.newId
 )
   extends BoundedEntity {
 
   import Ship._
+
+  lazy val nosePosition : Vector2 = boundingBox.topCenter
 
   def update() : Ship = {
     val newVelocity = dampen(velocity + acceleration)
@@ -33,6 +36,8 @@ case class Ship(
   def positiveModulus(dividend : Float, divisor : Float) : Float = {
     ((dividend % divisor) + divisor) % divisor
   }
+
+  val fireVelocity : Vector2 = Vector2(0, 50f)
 
   private def dampen(vector : Vector2) : Vector2 = {
     Vector2(dampen(vector.x), dampen(vector.y))
