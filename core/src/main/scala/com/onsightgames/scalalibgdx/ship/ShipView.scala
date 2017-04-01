@@ -8,13 +8,16 @@ object ShipView extends View[Ship] {
 
   private val texture = new Texture("ship.png")
 
+  private val TextureBorder = 10f
+
   override def render(ship: Ship, batch: SpriteBatch): Unit = {
+    val boundingBox = ship.bounds.getBoundingRectangle
     batch.draw(
       texture,
-      ship.boundingBox.bottomLeft.x,
-      ship.boundingBox.bottomLeft.y,
-      ship.boundingBox.dimensions.x,
-      ship.boundingBox.dimensions.y
+      boundingBox.x - TextureBorder,
+      boundingBox.y - TextureBorder,
+      boundingBox.width + 2 * TextureBorder,
+      boundingBox.height + 2 * TextureBorder
     )
   }
 }

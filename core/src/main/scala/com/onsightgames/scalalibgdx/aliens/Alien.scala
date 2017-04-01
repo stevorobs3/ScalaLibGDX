@@ -10,8 +10,8 @@ object Alien {
   def simple : Alien = Alien(Rectangle(Vector2.Zero, Vector2(40f, 40f)), 0f)
 }
 
-case class Alien(boundingBox : Rectangle, currentTime : Float)
-  extends Collidable {
+case class Alien(bounds : Rectangle, currentTime : Float)
+  extends Collidable[Rectangle] {
 
   val collisionLayer = Collidable.Layers.Alien
 }

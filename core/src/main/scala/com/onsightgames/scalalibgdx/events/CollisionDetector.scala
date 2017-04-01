@@ -1,11 +1,12 @@
 package com.onsightgames.scalalibgdx.events
 
+import com.badlogic.gdx.math.Intersector
 import com.onsightgames.scalalibgdx.events.CollisionDetector._
 import com.onsightgames.scalalibgdx.{Collidable, Entity}
 
 object CollisionDetector {
 
-  type GroupedCollidables = Map[Collidable.Layer, Set[Collidable]]
+  type GroupedCollidables = Map[Collidable.Layer, Set[Collidable[_]]]
   type CollisionMap = Map[Collidable.Layer, Collidable.Layer]
 
   val DefaultCollisionMap : CollisionMap = Map(Collidable.Layers.Ship -> Collidable.Layers.Alien)
@@ -23,13 +24,13 @@ class CollisionDetector(collisionMap : CollisionMap = DefaultCollisionMap) {
   private def extractCollidables(entities : Iterable[Entity]) : GroupedCollidables = {
     entities.foldLeft(Map() : GroupedCollidables) { case (collidables, entity) =>
       entity match {
-        case collidable : Collidable => add(collidables, collidable)
-        case _                       => collidables
+        case collidable : Collidable[_] => add(collidables, collidable)
+        case _                          => collidables
       }
     }
   }
 
-  private def add(collidables : GroupedCollidables, collidable: Collidable) = {
+  private def add(collidables : GroupedCollidables, collidable: Collidable[_]) = {
     val group = collidables.getOrElse(collidable.collisionLayer, Set())
     collidables + (collidable.collisionLayer -> (group + collidable))
   }
@@ -42,7 +43,7 @@ class CollisionDetector(collisionMap : CollisionMap = DefaultCollisionMap) {
     }
   }
 
-  private def detectCollisionsBetweenLayers(layer : Set[Collidable], other : Set[Collidable]) = {
+  private def detectCollisionsBetweenLayers(layer : Set[Collidable[_]], other : Set[Collidable[_]]) = {
     layer flatMap { collidable =>
       other flatMap { otherCollidable =>
         if (areColliding(collidable, otherCollidable)) {
@@ -55,8 +56,8 @@ class CollisionDetector(collisionMap : CollisionMap = DefaultCollisionMap) {
     }
   }
 
-  private def areColliding(collidable : Collidable, otherCollidable : Collidable) : Boolean = {
+  private def areColliding(collidable : Collidable[_], otherCollidable : Collidable[_]) : Boolean = {
     collidable.id != otherCollidable.id &&
-      collidable.boundingBox.overlaps(otherCollidable.boundingBox)
+      Intersector.overlapConvexPolygons(collidable.bounds, otherCollidable.bounds)
   }
 }

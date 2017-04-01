@@ -1,5 +1,7 @@
 package com.onsightgames.scalalibgdx
 
+import com.onsightgames.scalalibgdx.libgdx.BasePolygon
+
 object Collidable {
 
   sealed trait Layer
@@ -9,6 +11,6 @@ object Collidable {
   }
 }
 
-trait Collidable extends BoundedEntity {
+trait Collidable[Shape <: BasePolygon[Shape]] extends BoundedEntity[Shape] {
   val collisionLayer : Collidable.Layer
 }

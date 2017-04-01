@@ -1,16 +1,16 @@
 package com.onsightgames.scalalibgdx
 
-import com.onsightgames.scalalibgdx.libgdx.Rectangle
+import com.onsightgames.scalalibgdx.libgdx.BasePolygon
 
-trait BoundedEntity extends Entity {
+trait BoundedEntity[Shape <: BasePolygon[Shape]] extends Entity {
 
-  val boundingBox : Rectangle
+  val bounds : BasePolygon[Shape]
 
-  def isLeftOf(hasBoundingBox : BoundedEntity) : Boolean = {
-    boundingBox.x < hasBoundingBox.boundingBox.x
+  def isLeftOf(hasBoundingBox : BoundedEntity[_]) : Boolean = {
+    bounds.centre.x < hasBoundingBox.bounds.centre.x
   }
 
-  def isRightOf(hasBoundingBox : BoundedEntity) : Boolean = {
-    boundingBox.x > hasBoundingBox.boundingBox.x
+  def isRightOf(hasBoundingBox : BoundedEntity[_]) : Boolean = {
+    bounds.centre.x > hasBoundingBox.bounds.centre.x
   }
 }

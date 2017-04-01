@@ -17,7 +17,7 @@ object AlienFleetFactory {
   def buildState(alienFleetData : AlienFleetInitialData) : AlienFleet = {
     AlienFleet(
       aliens       = setupFormation(buildAliens(alienFleetData), alienFleetData),
-      boundingBox  = alienFleetData.boundingBox,
+      bounds  = alienFleetData.boundingBox,
       velocity     = alienFleetData.velocity,
       acceleration = alienFleetData.acceleration
     )
@@ -37,10 +37,10 @@ object AlienFleetFactory {
             val position = calculateAlienPosition(
               rowNum,
               colNum,
-              alien.boundingBox,
+              alien.bounds,
               alienFleetData
             )
-            alien.copy(boundingBox = alien.boundingBox.copy(bottomLeft = position))
+            alien.copy(bounds = alien.bounds.copy(bottomLeft = position))
         }
     }
   }

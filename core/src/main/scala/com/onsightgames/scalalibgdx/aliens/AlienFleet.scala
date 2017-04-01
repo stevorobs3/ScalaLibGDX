@@ -6,10 +6,10 @@ import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 
 case class AlienFleet(
   aliens       : Matrix[Alien],
-  boundingBox  : Rectangle,
+  bounds       : Rectangle,
   velocity     : Vector2,
   acceleration : Vector2
-) extends MovingEntity[AlienFleet] {
+) extends MovingEntity[AlienFleet, Rectangle] {
 
   override def update(timeElapsed : Float) : AlienFleet = {
     val movement = calculateNextVelocity() * timeElapsed
@@ -26,13 +26,13 @@ case class AlienFleet(
   }
 
   override protected def update(newBounds : Rectangle, newVelocity : Vector2) : AlienFleet = {
-    copy(boundingBox = newBounds, velocity = newVelocity)
+    copy(bounds = newBounds, velocity = newVelocity)
   }
 
   private def transformAlien(alien : Alien, timeElapsed : Float, movement : Vector2) : Alien = {
     alien.copy(
       currentTime = alien.currentTime + timeElapsed,
-      boundingBox = alien.boundingBox.translate(movement)
+      bounds = alien.bounds.translate(movement)
     )
   }
 }

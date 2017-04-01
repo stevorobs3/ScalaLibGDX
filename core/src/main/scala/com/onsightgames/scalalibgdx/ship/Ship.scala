@@ -1,6 +1,6 @@
 package com.onsightgames.scalalibgdx.ship
 
-import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
+import com.onsightgames.scalalibgdx.libgdx.{Polygon, Vector2}
 import com.onsightgames.scalalibgdx.{Collidable, MovingEntity}
 
 object Ship {
@@ -10,12 +10,12 @@ object Ship {
 }
 
 case class Ship(
-  boundingBox  : Rectangle,
+  bounds       : Polygon,
   velocity     : Vector2,
   acceleration : Vector2
 )
-  extends MovingEntity[Ship]
-  with Collidable {
+  extends MovingEntity[Ship, Polygon]
+  with Collidable[Polygon] {
 
   import Ship._
 
@@ -25,8 +25,8 @@ case class Ship(
     dampen(velocity + acceleration)
   }
 
-  override protected def update(newBounds: Rectangle, newVelocity: Vector2): Ship = {
-    copy(boundingBox = newBounds, velocity = newVelocity)
+  override protected def update(newBounds: Polygon, newVelocity: Vector2): Ship = {
+    copy(bounds = newBounds, velocity = newVelocity)
   }
 
   def withAcceleration(vector: Vector2): Ship = {

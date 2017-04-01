@@ -37,6 +37,6 @@ object ShipReducer extends Reducer[Ship] {
       case Boundary.Bottom => Vector2(x = 0, y = +screen.height)
       case Boundary.Top    => Vector2(x = 0, y = -screen.height)
     }
-    ship.copy(boundingBox = ship.boundingBox.translate(positionChange))
+    ship.copy(bounds = ship.bounds.translate(positionChange))
   }
 }
