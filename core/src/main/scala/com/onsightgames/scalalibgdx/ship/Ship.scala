@@ -1,7 +1,7 @@
 package com.onsightgames.scalalibgdx.ship
 
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
-import com.onsightgames.scalalibgdx.MovingEntity
+import com.onsightgames.scalalibgdx.{Collidable, MovingEntity}
 
 object Ship {
 
@@ -14,9 +14,12 @@ case class Ship(
   velocity     : Vector2,
   acceleration : Vector2
 )
-  extends MovingEntity[Ship] {
+  extends MovingEntity[Ship]
+  with Collidable {
 
   import Ship._
+
+  val collisionLayer = Collidable.Layers.Ship
 
   override def calculateNextVelocity() : Vector2 = {
     dampen(velocity + acceleration)

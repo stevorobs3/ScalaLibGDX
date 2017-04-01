@@ -1,15 +1,16 @@
 package com.onsightgames.scalalibgdx.aliens
 
-import com.onsightgames.scalalibgdx.Component
+import com.onsightgames.scalalibgdx.{Component, Entity}
 import com.onsightgames.scalalibgdx.Math.Matrix
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 
 object AlienFleetFactory {
   def buildComponent(alienFleetData : AlienFleetInitialData) : Component[AlienFleet] = {
     Component(
-      state   = buildState(alienFleetData),
-      reducer = AlienFleetReducer,
-      views   = Set(AlienFleetView)
+      state         = buildState(alienFleetData),
+      reducer       = AlienFleetReducer,
+      views         = Set(AlienFleetView),
+      mapToEntities = mapFleetToEntities
     )
   }
 
@@ -58,5 +59,8 @@ object AlienFleetFactory {
     Vector2(x, y)
   }
 
+  private def mapFleetToEntities(fleet : AlienFleet) : Iterable[Entity] = {
+    ((Nil : Seq[Entity]) :+ fleet) ++ fleet.aliens.flatten
+  }
 
 }

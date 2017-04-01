@@ -2,7 +2,7 @@ package com.onsightgames.scalalibgdx.events
 
 import com.onsightgames.scalalibgdx.Entity
 
-trait TargetedEvent extends Event {
+trait SingleTargetedEvent extends Event {
 
   val entityId : Entity.Id
 

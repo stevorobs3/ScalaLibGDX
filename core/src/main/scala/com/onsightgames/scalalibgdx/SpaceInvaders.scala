@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.{Gdx, Screen}
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.onsightgames.scalalibgdx.events.LifecycleEventEmitter.Update
-import com.onsightgames.scalalibgdx.events.{BoundaryCollisionDetector, KeyboardEventEmitter, LifecycleEventEmitter}
+import com.onsightgames.scalalibgdx.events.{BoundaryCollisionDetector, CollisionDetector, KeyboardEventEmitter, LifecycleEventEmitter}
 import com.onsightgames.scalalibgdx.libgdx.{Rectangle, Vector2}
 
 object SpaceInvaders {
@@ -24,6 +24,7 @@ object SpaceInvaders {
   private val lifecycleEventEmitter     = new LifecycleEventEmitter(update, render)
   private val keyboardEventEmitter      = new KeyboardEventEmitter(store.dispatch)
   private val boundaryCollisionDetector = new BoundaryCollisionDetector
+  private val collisionDetector         = new CollisionDetector
 
   private lazy val batch  = new SpriteBatch
 
@@ -39,6 +40,10 @@ object SpaceInvaders {
     store.dispatch(updateEvent)
     boundaryCollisionDetector
       .run(screen, store.getState)
+      .foreach(store.dispatch)
+
+    collisionDetector
+      .run(store.getState)
       .foreach(store.dispatch)
   }
 

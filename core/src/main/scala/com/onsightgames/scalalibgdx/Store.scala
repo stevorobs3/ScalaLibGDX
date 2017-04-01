@@ -9,7 +9,7 @@ class Store(var components : Set[Component[_ <: Entity]]) {
   }
 
   def getState : Iterable[Entity] = {
-    components.map(_.state)
+    components.flatMap(_.getAllEntites)
   }
 
 }

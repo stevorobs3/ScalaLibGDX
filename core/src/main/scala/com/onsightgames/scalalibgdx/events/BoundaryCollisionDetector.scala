@@ -17,13 +17,13 @@ object BoundaryCollisionDetector {
     entityId : Entity.Id,
     boundary : Boundary,
     screen   : Rectangle
-  ) extends TargetedEvent
+  ) extends SingleTargetedEvent
 
   case class BoundaryCrossed(
     entityId : Entity.Id,
     boundary : Boundary,
     screen   : Rectangle
-  ) extends TargetedEvent
+  ) extends SingleTargetedEvent
 }
 
 class BoundaryCollisionDetector {
