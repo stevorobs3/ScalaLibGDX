@@ -184,6 +184,144 @@
 
 -dontnote com.badlogic.gdx.physics.box2d.World
 
+#akka
+### Akka (from proguard sample for akka)
+-keepclassmembernames class * implements akka.actor.Actor {
+  akka.actor.ActorContext context;
+  akka.actor.ActorRef self;
+}
+-keep class * implements akka.actor.ActorRefProvider {
+  public <init>(...);
+}
+-keep class * implements akka.actor.ExtensionId {
+  public <init>(...);
+}
+-keep class * implements akka.actor.ExtensionIdProvider {
+  public <init>(...);
+}
+-keep class akka.actor.SerializedActorRef {
+  *;
+}
+-keep class * implements akka.actor.SupervisorStrategyConfigurator {
+  public <init>(...);
+}
+-keep class * extends akka.dispatch.ExecutorServiceConfigurator {
+  public <init>(...);
+}
+-keep class * implements akka.dispatch.MailboxType {
+  public <init>(...);
+}
+-keep class * extends akka.dispatch.MessageDispatcherConfigurator {
+  public <init>(...);
+}
+-keep class akka.event.Logging*
+-keep class akka.event.Logging$LogExt {
+  public <init>(...);
+}
+-keep class akka.remote.DaemonMsgCreate {
+  *;
+}
+-keep class * extends akka.remote.RemoteTransport {
+  public <init>(...);
+}
+-keep class * implements akka.routing.RouterConfig {
+  public <init>(...);
+}
+-keep class * implements akka.serialization.Serializer {
+  public <init>(...);
+}
+-dontwarn akka.remote.netty.NettySSLSupport**
+-dontnote akka.**
+
+# (I added)
+-keep class akka.event.slf4j.** { *; }
+-keep class akka.actor.LightArrayRevolverScheduler { *; }
+-keep class akka.**
+-keep class akka.** { *; }
+# Inner classes like akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinPool
+#-keep class akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinPool { *; }
+#-keepclassmembers class akka.** { *; }
+#-keep class akka.**.*$*
+#-keep class akka.**$*
+-keep class com.percebemusic.pianoapp.core.package$ { *; }
+-keep scala.concurrent.forkjoin.ForkJoinPool$ForkJoinWorkerThreadFactory { *; }
+
+# below required to keep generic type parameters, on which akka reflects
+-keepattributes Signature
+
+# and from https://spin.atomicobject.com/2013/06/20/akka-scala-on-android/ (didn't help)
+-keep class com.typesafe.**
+-keep class akka.**
+-keep class scala.collection.immutable.StringLike {
+    *;
+}
+-keepclasseswithmembers class * {
+    public <init>(java.lang.String, akka.actor.ActorSystem$Settings, akka.event.EventStream, akka.actor.Scheduler, akka.actor.DynamicAccess);
+}
+-keepclasseswithmembers class * {
+    public <init>(akka.actor.ExtendedActorSystem);
+}
+-keep class scala.collection.SeqLike {
+    public protected *;
+}
+
+# and from http://macroid.github.io/modules/Akka.html (didn't help)
+-keep class akka.actor.LightArrayRevolverScheduler { *; }
+-keep class akka.actor.LocalActorRefProvider { *; }
+-keep class akka.actor.CreatorFunctionConsumer { *; }
+-keep class akka.actor.TypedCreatorFunctionConsumer { *; }
+-keep class akka.dispatch.BoundedDequeBasedMessageQueueSemantics { *; }
+-keep class akka.dispatch.UnboundedMessageQueueSemantics { *; }
+-keep class akka.dispatch.UnboundedDequeBasedMessageQueueSemantics { *; }
+-keep class akka.dispatch.DequeBasedMessageQueueSemantics { *; }
+-keep class akka.actor.LocalActorRefProvider$Guardian { *; }
+-keep class akka.actor.LocalActorRefProvider$SystemGuardian { *; }
+-keep class akka.dispatch.UnboundedMailbox { *; }
+-keep class akka.actor.DefaultSupervisorStrategy { *; }
+-keep class macroid.akka.AkkaAndroidLogger { *; }
+-keep class akka.event.Logging$LogExt { *; }
+
+# and from http://stackoverflow.com/questions/15823383/how-to-use-akka-project-under-android (didn't help)
+-dontwarn scala.**
+-keepclassmembers class * {
+    ** MODULE$;
+}
+-keep class scala.collection.SeqLike {
+    public protected *;
+}
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class com.android.vending.licensing.ILicensingService
+-keep public class org.eatbacon.sfth.AnalogUpdateActivity
+-keep public class org.eatbacon.sfth.UpdateDataTask
+-keep public class org.eatbacon.sfth.ShowChartActivity
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
 # Needed descriptor classes
 
 -keep public class com.badlogic.gdx.ApplicationListener

@@ -10,6 +10,7 @@ import org.scalastyle.sbt.ScalastylePlugin.scalastyle
 val libgdxVersion    = "1.9.5"
 val scalaLangVersion = "2.11.8"
 val proguardVersion  = "5.1"
+val akkaActorVersion = "2.5.0"
 val title = "ScalaLibGDX"
 val assetDir = "assets"
 
@@ -32,7 +33,8 @@ lazy val sharedSettings: Seq[Def.Setting[_]] = Seq(
     r
   },
   libraryDependencies ++= Seq(
-    "com.badlogicgames.gdx" % "gdx" % libgdxVersion
+    "com.badlogicgames.gdx" % "gdx" % libgdxVersion,
+    "com.typesafe.akka" %% "akka-typed" % akkaActorVersion
   ),
   javacOptions ++= Seq(
     "-Xlint",

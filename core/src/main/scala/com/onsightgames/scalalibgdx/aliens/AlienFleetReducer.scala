@@ -4,7 +4,7 @@ import com.onsightgames.scalalibgdx.Reducer
 import com.onsightgames.scalalibgdx.events.BoundaryCollisionDetector.{Boundary, BoundaryTouched}
 import com.onsightgames.scalalibgdx.events.CollisionDetector.Collision
 import com.onsightgames.scalalibgdx.events.Event
-import com.onsightgames.scalalibgdx.events.LifecycleEventEmitter.Update
+import com.onsightgames.scalalibgdx.events.LifecycleManager.Update
 
 object AlienFleetReducer extends Reducer[AlienFleet] {
 

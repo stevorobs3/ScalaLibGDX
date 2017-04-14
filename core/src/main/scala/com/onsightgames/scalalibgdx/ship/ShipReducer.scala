@@ -4,7 +4,7 @@ import com.onsightgames.scalalibgdx.Reducer
 import com.onsightgames.scalalibgdx.events.BoundaryCollisionDetector.{Boundary, BoundaryCrossed}
 import com.onsightgames.scalalibgdx.events.Event
 import com.onsightgames.scalalibgdx.events.KeyboardEventEmitter.{Key, KeyDownEvent, KeyUpEvent}
-import com.onsightgames.scalalibgdx.events.LifecycleEventEmitter.Update
+import com.onsightgames.scalalibgdx.events.LifecycleManager.Update
 import com.onsightgames.scalalibgdx.libgdx.Vector2
 
 object ShipReducer extends Reducer[Ship] {
