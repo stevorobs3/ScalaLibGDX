@@ -9,7 +9,7 @@ import com.onsightgames.scalalibgdx.events.LifecycleManager.Update
 object AlienFleetReducer extends Reducer[AlienFleet] {
 
   override def reduce: PartialFunction[(AlienFleet, Event), AlienFleet] = {
-    case (fleet, Update(timeElapsed)) => fleet.update(timeElapsed)
+    case (fleet, u : Update) => fleet.update(u.timeElapsed)
 
     case (fleet, collision : Collision) =>
       val aliens = fleet.aliens map { _ filter(alien => !collision.isTarget(alien)) }

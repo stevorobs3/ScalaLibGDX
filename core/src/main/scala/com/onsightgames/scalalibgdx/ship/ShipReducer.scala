@@ -12,7 +12,7 @@ object ShipReducer extends Reducer[Ship] {
   val Acceleration = 15f
 
   override def reduce: PartialFunction[(Ship, Event), Ship] = {
-    case (ship, Update(timeElapsed))               => ship.update(timeElapsed)
+    case (ship, u : Update)               => ship.update(u.timeElapsed)
 
     case (ship, KeyDownEvent(Key.Left))  => ship.withAcceleration(Vector2(-Acceleration, 0))
     case (ship, KeyDownEvent(Key.Right)) => ship.withAcceleration(Vector2(+Acceleration, 0))

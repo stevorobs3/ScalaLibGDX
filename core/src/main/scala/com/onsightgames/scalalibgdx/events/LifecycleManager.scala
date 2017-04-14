@@ -2,7 +2,7 @@ package com.onsightgames.scalalibgdx.events
 
 import akka.actor.Scheduler
 import akka.typed._
-import akka.typed.scaladsl.Actor.{Same, Stateful}
+import akka.typed.scaladsl.Actor._
 import akka.typed.scaladsl.AskPattern._
 import akka.util.Timeout
 import com.badlogic.gdx.graphics.GL20
@@ -25,7 +25,7 @@ object LifecycleManager {
   ) extends Event
   sealed trait Register extends Event
 
-  case class RegisterRender(entity : ActorRef[Update]) extends Register
+  case class RegisterUpdate(entity : ActorRef[Update]) extends Register
 
   case class RenderAction(renderAction : SpriteBatch => Unit) extends Event
 
@@ -33,16 +33,17 @@ object LifecycleManager {
 
 
  // TODO: extend for hide, show, etc
-  def updater(entities : List[ActorRef[Event]] = List.empty) : Behavior[Event] = {
+  def updater(entities : List[ActorRef[Update]] = List.empty) : Behavior[Event] = {
   import scala.concurrent.ExecutionContext.Implicits.global
     Stateful{ (_, msg) =>
       msg match {
         case update : Update =>
+          println(s"getting update with ${entities.length} entities")
           implicit val scheduler = update.scheduler
           val future = entities
             .map(_ ? (Update(update.timeElapsed, update.scheduler, _ : ActorRef[RenderAction])))
             .map(_.map(_.renderAction))
-            .reduce {
+            .reduceOption {
             (leftF, rightF) =>
               leftF.flatMap(left =>
                 rightF.map{right => batch : SpriteBatch =>
@@ -50,9 +51,17 @@ object LifecycleManager {
                   left(batch)
                 }
               )
-          }
+          }.getOrElse(Future.successful{
+            (_ : SpriteBatch) =>
+              // intentional no-op
+          })
           future.map(action => update.replyTo ! RenderAction(action))
           Same
+        case RegisterUpdate(entity) =>
+          println("Reg in updater!")
+          updater(entity :: entities)
+        case _ =>
+          Unhandled
       }
     }
   }
@@ -60,8 +69,9 @@ object LifecycleManager {
   def create(updaterRef : ActorRef[LifecycleManager.Event]) : Behavior[Register] = {
     Stateful[Register] { (_, msg) =>
       msg match {
-        case RegisterRender(entity) =>
-          updaterRef ! RegisterRender(entity)
+        case RegisterUpdate(entity) =>
+          println(s"Registering Update")
+          updaterRef ! RegisterUpdate(entity)
           Same
       }
     }

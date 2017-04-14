@@ -2,7 +2,7 @@ package com.onsightgames.scalalibgdx
 
 import akka.typed._
 import akka.typed.scaladsl.Actor._
-import com.badlogic.gdx.{Game, Screen}
+import com.badlogic.gdx.Game
 import com.onsightgames.scalalibgdx.events.LifecycleManager
 
 object ScalaLibGDX {
@@ -26,8 +26,8 @@ class ScalaLibGDX extends Game
             val screen = new LifecycleManager(updaterSys)
             setScreen(screen)
             val lifeCycleRef = ctx.spawn(LifecycleManager.create(updaterSys), "registry")
-
-            SpaceInvaders.start(lifeCycleRef)
+            info("Starting")
+            SpaceInvaders.start(ctx, lifeCycleRef)
             Same
           case _ ⇒
             Unhandled
@@ -35,6 +35,6 @@ class ScalaLibGDX extends Game
       })
 
   override def create(): Unit = {
-    ActorSystem("SpaceInvadersGame", main)
+    val _ = ActorSystem("SpaceInvadersGame", main)
   }
 }
