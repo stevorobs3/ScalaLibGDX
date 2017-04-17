@@ -49,6 +49,7 @@ abstract class Entity[T, D] (initialData : D)(
         sig match {
           case PreStart =>
             val updateRef = ctx.spawnAdapter(parseUpdate)
+            info(s"Registsr $updateRef")
             lifecycleManagerRef ! RegisterUpdate(updateRef)
             Same
           case _ ⇒
@@ -66,13 +67,14 @@ abstract class EntityView[T, D](
   lifecycleManager : ActorSystem[LifecycleManager.Event]
 ) {
   // dependency inject this!
-  protected def actor            : Entity[T, D]
+  protected def entity            : Entity[T, D]
   // define this!
   protected def render(data : D) : RenderAction
 
   val view : ActorRef[Render] = ctx.spawn(render, s"$getClass-View")
 
-  lifecycleManager ! RegisterRegister(view)
+  println(s"view $view")
+  lifecycleManager ! RegisterRender(view)
 
   // call this in framework
   private def render : Behavior[Render] = {
@@ -81,7 +83,7 @@ abstract class EntityView[T, D](
         msg match {
           case Render(replyTo) =>
             val renderer = ctx.spawn(renderAction(replyTo), s"$getClass: renderer")
-            actor.stateRef ! renderer
+            entity.stateRef ! renderer
             Same
         }
     }
@@ -106,7 +108,7 @@ object Alien {
   case class GetState(replyTo : ActorRef[AlienData]) extends AlienEvents
 }
 
-class AlienView(val actor: Entity[Alien.AlienEvents, Alien.AlienData])(
+class AlienView(val entity: Entity[Alien.AlienEvents, Alien.AlienData])(
   implicit
   ctx                 : scaladsl.ActorContext[akka.NotUsed],
   lifecycleManagerRef : ActorSystem[LifecycleManager.Event]

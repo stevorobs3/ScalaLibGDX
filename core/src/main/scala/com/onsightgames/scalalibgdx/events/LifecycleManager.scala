@@ -27,7 +27,7 @@ object LifecycleManager extends HasLogger {
   sealed trait Register extends Event
 
   case class RegisterUpdate(entity : ActorRef[Update]) extends Register
-  case class RegisterRegister(entity : ActorRef[Render]) extends Register
+  case class RegisterRender(entity : ActorRef[Render]) extends Register
 
   case class Render(replyTo : ActorRef[RenderAction]) extends Event
 
@@ -62,8 +62,11 @@ object LifecycleManager extends HasLogger {
           future.map(action => update.replyTo ! RenderAction(action))
           Same
         case RegisterUpdate(entity) =>
-          println("Reg in updater!")
+          println(s"Reg in updater! $entity")
           updater(entity :: entities)
+        case RegisterRender(entity) =>
+          println(s"Reg in rendering! $entity")
+          Same
         case _ =>
           Unhandled
       }
@@ -73,12 +76,13 @@ object LifecycleManager extends HasLogger {
   def create(updaterRef : ActorRef[LifecycleManager.Event]) : Behavior[Register] = {
     Stateful[Register] { (_, msg) =>
       msg match {
-        case RegisterUpdate(entity) =>
+        case r @ RegisterUpdate(entity) =>
           info(s"Registering Update $entity")
-          updaterRef ! RegisterUpdate(entity)
+          updaterRef ! r
           Same
-        case RegisterRegister(view) =>
+        case r @ RegisterRender(view) =>
           info(s"Registering Render $view")
+          updaterRef ! r
           Same
       }
     }
