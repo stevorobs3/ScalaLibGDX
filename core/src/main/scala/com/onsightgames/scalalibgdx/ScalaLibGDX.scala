@@ -23,14 +23,15 @@ class ScalaLibGDX extends Game
       signal = { (ctx, sig) ⇒
         sig match {
           case PreStart ⇒
-            implicit val updaterSys = ActorSystem("updater", LifecycleManager.updater())
+            val updaterSys = ActorSystem("updater", LifecycleManager.updater())
             implicit val context = ctx
+            implicit val lifeCycleRef = ctx.spawn(LifecycleManager.create(updaterSys), "registry")
 
-            val alien = new Alien(Alien.ActiveData(1))
+            val alien = new Alien(Alien.AlienData(1))
             val _ = new AlienView(alien)
             val screen = new LifecycleManager(updaterSys)
             setScreen(screen)
-            //val lifeCycleRef = ctx.spawn(LifecycleManager.create(updaterSys), "registry")
+
             info("Starting")
             //SpaceInvaders.start(ctx, lifeCycleRef)
             Same

@@ -21,7 +21,7 @@ object Entity {
 abstract class Entity[T, D] (initialData : D)(
   implicit
   ctx                 : scaladsl.ActorContext[akka.NotUsed],
-  lifecycleManagerRef : ActorSystem[LifecycleManager.Event]
+  lifecycleManagerRef : ActorRef[LifecycleManager.Register]
 ) {
   type Update   <: T
   type GetState <: T
@@ -64,7 +64,7 @@ abstract class Entity[T, D] (initialData : D)(
 abstract class EntityView[T, D](
   implicit
   ctx              : scaladsl.ActorContext[akka.NotUsed],
-  lifecycleManager : ActorSystem[LifecycleManager.Event]
+  lifecycleManager : ActorRef[LifecycleManager.Register]
 ) {
   // dependency inject this!
   protected def entity            : Entity[T, D]
@@ -98,9 +98,7 @@ abstract class EntityView[T, D](
 }
 
 object Alien {
-  sealed trait AlienData
-  case class ActiveData(health: Float) extends AlienData
-  case class DeadData(headCount: Int) extends AlienData
+  case class AlienData(health: Float)
 
   sealed trait AlienEvents
   case class Fire(x: Int) extends AlienEvents
@@ -111,7 +109,7 @@ object Alien {
 class AlienView(val entity: Entity[Alien.AlienEvents, Alien.AlienData])(
   implicit
   ctx                 : scaladsl.ActorContext[akka.NotUsed],
-  lifecycleManagerRef : ActorSystem[LifecycleManager.Event]
+  lifecycleManagerRef : ActorRef[LifecycleManager.Register]
 )
   extends EntityView[Alien.AlienEvents, Alien.AlienData]
   with HasLogger {
@@ -126,7 +124,7 @@ class AlienView(val entity: Entity[Alien.AlienEvents, Alien.AlienData])(
 class Alien(initialData : Alien.AlienData)(
   implicit
   ctx                 : scaladsl.ActorContext[akka.NotUsed],
-  lifecycleManagerRef : ActorSystem[LifecycleManager.Event]
+  lifecycleManagerRef : ActorRef[LifecycleManager.Register]
 )
   extends Entity[Alien.AlienEvents, Alien.AlienData](initialData)
   with HasLogger
@@ -145,7 +143,10 @@ class Alien(initialData : Alien.AlienData)(
       case Fire(_) =>
         info("Firing!")
         Same
-      case _ =>
-        Unhandled
+      case Update(deltaTime) =>
+        Stateless(entityBehavior(data.copy(health = data.health + deltaTime)))
+      case GetState(replyTo) =>
+        replyTo ! data
+        Same
     }
 }
