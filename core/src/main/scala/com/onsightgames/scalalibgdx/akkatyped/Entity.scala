@@ -13,10 +13,15 @@ trait KeyUpEventEventHandler {
   def behavior : Behavior[KeyUpEvent]
 }
 
+object Entity {
+
+}
+
+
 abstract class Entity[T, D] (initialData : D)(
   implicit
   ctx                 : scaladsl.ActorContext[akka.NotUsed],
-  lifecycleManagerRef : ActorRef[LifecycleManager.Event]
+  lifecycleManagerRef : ActorSystem[LifecycleManager.Event]
 ) {
   type Update   <: T
   type GetState <: T
@@ -58,7 +63,7 @@ abstract class Entity[T, D] (initialData : D)(
 abstract class EntityView[T, D](
   implicit
   ctx              : scaladsl.ActorContext[akka.NotUsed],
-  lifecycleManager : ActorRef[LifecycleManager.Event]
+  lifecycleManager : ActorSystem[LifecycleManager.Event]
 ) {
   // dependency inject this!
   protected def actor            : Entity[T, D]
@@ -101,7 +106,11 @@ object Alien {
   case class GetState(replyTo : ActorRef[AlienData]) extends AlienEvents
 }
 
-class AlienView(val actor: Entity[Alien.AlienEvents, Alien.AlienData])
+class AlienView(val actor: Entity[Alien.AlienEvents, Alien.AlienData])(
+  implicit
+  ctx                 : scaladsl.ActorContext[akka.NotUsed],
+  lifecycleManagerRef : ActorSystem[LifecycleManager.Event]
+)
   extends EntityView[Alien.AlienEvents, Alien.AlienData]
   with HasLogger {
   import Alien._
@@ -112,7 +121,11 @@ class AlienView(val actor: Entity[Alien.AlienEvents, Alien.AlienData])
   }
 }
 
-class Alien(initialData : Alien.AlienData)
+class Alien(initialData : Alien.AlienData)(
+  implicit
+  ctx                 : scaladsl.ActorContext[akka.NotUsed],
+  lifecycleManagerRef : ActorSystem[LifecycleManager.Event]
+)
   extends Entity[Alien.AlienEvents, Alien.AlienData](initialData)
   with HasLogger
 {
@@ -130,5 +143,7 @@ class Alien(initialData : Alien.AlienData)
       case Fire(_) =>
         info("Firing!")
         Same
+      case _ =>
+        Unhandled
     }
 }

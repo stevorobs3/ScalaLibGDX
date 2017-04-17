@@ -15,7 +15,8 @@ import scala.concurrent.{Await, Future}
 import scala.util.Try
 
 
-object LifecycleManager {
+object LifecycleManager extends HasLogger {
+  override val LogId = "LifecycleManager"
 
   sealed trait Event
   case class Update(
@@ -73,8 +74,11 @@ object LifecycleManager {
     Stateful[Register] { (_, msg) =>
       msg match {
         case RegisterUpdate(entity) =>
-          println(s"Registering Update")
+          info(s"Registering Update $entity")
           updaterRef ! RegisterUpdate(entity)
+          Same
+        case RegisterRegister(view) =>
+          info(s"Registering Render $view")
           Same
       }
     }

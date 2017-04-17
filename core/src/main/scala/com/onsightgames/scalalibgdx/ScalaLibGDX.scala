@@ -1,7 +1,7 @@
 package com.onsightgames.scalalibgdx
 
-import akkatyped.typed._
-import akkatyped.typed.scaladsl.Actor._
+import akka.typed._
+import akka.typed.scaladsl.Actor._
 import com.badlogic.gdx.Game
 import com.onsightgames.scalalibgdx.events.LifecycleManager
 
@@ -16,7 +16,7 @@ class ScalaLibGDX extends Game
  with HasLogger {
   val LogId = "ScalaLibGDX"
 
-  lazy val main: Behavior[akkatyped.NotUsed] =
+  lazy val main: Behavior[akka.NotUsed] =
     Stateful(
       behavior = (_, _) ⇒ Unhandled,
       signal = { (ctx, sig) ⇒

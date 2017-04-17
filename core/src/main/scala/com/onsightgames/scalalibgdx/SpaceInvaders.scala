@@ -1,9 +1,9 @@
 package com.onsightgames.scalalibgdx
 
-import akkatyped.NotUsed
-import akkatyped.typed.scaladsl.Actor._
-import akkatyped.typed.scaladsl.ActorContext
-import akkatyped.typed._
+import akka.NotUsed
+import akka.typed.scaladsl.Actor._
+import akka.typed.scaladsl.ActorContext
+import akka.typed._
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.onsightgames.scalalibgdx.events.LifecycleManager
 import com.onsightgames.scalalibgdx.events.LifecycleManager._
