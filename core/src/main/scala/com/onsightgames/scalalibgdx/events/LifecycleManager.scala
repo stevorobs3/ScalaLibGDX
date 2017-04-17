@@ -26,6 +26,9 @@ object LifecycleManager {
   sealed trait Register extends Event
 
   case class RegisterUpdate(entity : ActorRef[Update]) extends Register
+  case class RegisterRegister(entity : ActorRef[Render]) extends Register
+
+  case class Render(replyTo : ActorRef[RenderAction]) extends Event
 
   case class RenderAction(renderAction : SpriteBatch => Unit) extends Event
 
