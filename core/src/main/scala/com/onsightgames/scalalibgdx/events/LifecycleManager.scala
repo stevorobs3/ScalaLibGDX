@@ -22,14 +22,14 @@ object LifecycleManager extends HasLogger {
   case class Update(
     timeElapsed : Float,
     scheduler   : Scheduler,
-    replyTo     : ActorRef[RenderAction]
+    replyTo     : ActorRef[Boolean]
   ) extends Event
   sealed trait Register extends Event
 
   case class RegisterUpdate(entity : ActorRef[Update]) extends Register
   case class RegisterRender(entity : ActorRef[Render]) extends Register
 
-  case class Render(replyTo : ActorRef[RenderAction]) extends Event
+  case class Render(scheduler : Scheduler, replyTo : ActorRef[RenderAction]) extends Event
 
   case class RenderAction(renderAction : SpriteBatch => Unit) extends Event
 
@@ -37,35 +37,48 @@ object LifecycleManager extends HasLogger {
 
 
  // TODO: extend for hide, show, etc
-  def updater(entities : List[ActorRef[Update]] = List.empty) : Behavior[Event] = {
+  def looper(
+    updatables  : List[ActorRef[Update]] = List.empty,
+    renderables : List[ActorRef[Render]] = List.empty
+  ) : Behavior[Event] = {
   import scala.concurrent.ExecutionContext.Implicits.global
     Stateful{ (_, msg) =>
       msg match {
         case update : Update =>
-          println(s"getting update with ${entities.length} entities")
+          info(s"getting update with ${updatables.length} entities")
           implicit val scheduler = update.scheduler
-          val future = entities
-            .map(_ ? (Update(update.timeElapsed, update.scheduler, _ : ActorRef[RenderAction])))
-            .map(_.map(_.renderAction))
+          val future = updatables
+            .map(_ ? (Update(update.timeElapsed, update.scheduler, _ : ActorRef[Boolean])))
             .reduceOption {
             (leftF, rightF) =>
-              leftF.flatMap(left =>
-                rightF.map{right => batch : SpriteBatch =>
-                  right(batch)
-                  left(batch)
-                }
-              )
-          }.getOrElse(Future.successful{
-            (_ : SpriteBatch) =>
-              // intentional no-op
-          })
-          future.map(action => update.replyTo ! RenderAction(action))
+              leftF.flatMap(left => rightF.map{right => left && right})
+          }.getOrElse(Future.successful(true))
+          future.map(result => update.replyTo ! result)
+          Same
+        case render : Render =>
+          implicit val scheduler = render.scheduler
+          val future = renderables
+            .map(_ ? (Render(render.scheduler, _ : ActorRef[RenderAction])))
+            .map(_.map(_.renderAction))
+            .reduceOption {
+              (leftF, rightF) =>
+                leftF.flatMap(left =>
+                  rightF.map{right => batch : SpriteBatch =>
+                    right(batch)
+                         left(batch)
+                       }
+                     )
+                 }.getOrElse(Future.successful{
+                   (_ : SpriteBatch) =>
+                     // intentional no-op
+                 })
+                 future.map(action => render.replyTo ! RenderAction(action))
           Same
         case RegisterUpdate(entity) =>
-          println(s"Reg in updater! $entity")
-          updater(entity :: entities)
+          info(s"Reg in updater! $entity")
+          looper(entity :: updatables)
         case RegisterRender(entity) =>
-          println(s"Reg in rendering! $entity")
+          info(s"Reg in rendering! $entity")
           Same
         case _ =>
           Unhandled
@@ -127,11 +140,16 @@ class LifecycleManager(actorSystem : ActorSystem[LifecycleManager.Event]) extend
     batch.begin()
     implicit val timeout = Timeout(5.seconds)
     implicit val scheduler = actorSystem.scheduler
-    val future : Future[RenderAction] = actorSystem ? (Update(delta, scheduler, _))
-    val result = Try(Await.result(future, 5.seconds))
+    val future : Future[Boolean] = actorSystem ? (Update(delta, scheduler, _))
+    val result = Try(Await.result(future, 5.seconds)).getOrElse(false)
+    if (!result)
+      error(s"Failed to update in 5 seconds!")
+
+    val renderFuture : Future[RenderAction] = actorSystem ? (Render(scheduler, _))
+    val renderResult = Try(Await.result(renderFuture, 5.seconds))
       .map(_.renderAction)
-      .getOrElse((_ : SpriteBatch) => Unit)
-    result(batch)
+      .getOrElse((_ : SpriteBatch) => {}) // no-op
+    renderResult(batch)
     batch.end()
   }
 }

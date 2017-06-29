@@ -1,10 +1,9 @@
 package com.onsightgames.scalalibgdx
 
 import akka.NotUsed
+import akka.typed._
 import akka.typed.scaladsl.Actor._
 import akka.typed.scaladsl.ActorContext
-import akka.typed._
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.onsightgames.scalalibgdx.events.LifecycleManager
 import com.onsightgames.scalalibgdx.events.LifecycleManager._
 
@@ -27,14 +26,9 @@ object SpaceInvaders extends HasLogger {
   trait EntityEvents
   case class UpdateEntity(
     deltaTime : Float,
-    replyTo   : ActorRef[RenderAction]
+    replyTo   : ActorRef[Boolean]
   ) extends EntityEvents
 
-
-
-  private def noOp(batch : SpriteBatch) : Unit = {
-
-  }
   private def entity(
     lifecycleManagerRef : ActorRef[LifecycleManager.Register],
     data                : Int
@@ -42,8 +36,7 @@ object SpaceInvaders extends HasLogger {
     behavior = { (_, msg) =>
       msg match {
         case UpdateEntity(deltaTime, replyTo) =>
-          println(s"Render entity! ${1/ deltaTime}")
-          replyTo ! RenderAction(noOp)
+          println(s"Updating entity! ${1/ deltaTime}")
           Same
         case _ =>
           Unhandled

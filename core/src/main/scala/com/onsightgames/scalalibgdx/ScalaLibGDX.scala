@@ -23,7 +23,7 @@ class ScalaLibGDX extends Game
       signal = { (ctx, sig) ⇒
         sig match {
           case PreStart ⇒
-            val updaterSys = ActorSystem("updater", LifecycleManager.updater())
+            val updaterSys = ActorSystem("looper", LifecycleManager.looper())
             implicit val context = ctx
             implicit val lifeCycleRef = ctx.spawn(LifecycleManager.create(updaterSys), "registry")
 

@@ -81,7 +81,7 @@ abstract class EntityView[T, D](
     Stateless{
       (ctx, msg) =>
         msg match {
-          case Render(replyTo) =>
+          case Render(_, replyTo) =>
             val renderer = ctx.spawn(renderAction(replyTo), s"$getClass: renderer")
             entity.stateRef ! renderer
             Same
